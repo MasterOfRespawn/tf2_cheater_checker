@@ -1,0 +1,69 @@
+[gd_scene load_steps=3 format=3 uid="uid://boqbb4c23o88c"]
+
+[ext_resource type="Script" path="res://PlayerInfo.gd" id="1_6sifm"]
+[ext_resource type="Texture2D" uid="uid://dovqa4h5umw3m" path="res://icon.svg" id="2_k8l3g"]
+
+[node name="PlayerInfo" type="CenterContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6sifm")
+
+[node name="http" type="HTTPRequest" parent="."]
+unique_name_in_owner = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="close_button" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "X"
+
+[node name="infostep" type="ProgressBar" parent="HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 6.0
+step = 1.0
+allow_greater = true
+
+[node name="PlayerIcon" type="TextureRect" parent="HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_k8l3g")
+stretch_mode = 5
+
+[node name="PlayerSteamID" type="LineEdit" parent="HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "0123456789ABCDEF"
+placeholder_text = "STEAMID"
+alignment = 1
+editable = false
+expand_to_text_length = true
+context_menu_enabled = false
+virtual_keyboard_enabled = false
+shortcut_keys_enabled = false
+middle_mouse_paste_enabled = false
+
+[node name="PlayerName" type="LineEdit" parent="HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "DEBUGTEST0123456789"
+editable = false
+expand_to_text_length = true
+context_menu_enabled = false
+virtual_keyboard_enabled = false
+shortcut_keys_enabled = false
+middle_mouse_paste_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+
+[connection signal="request_completed" from="http" to="." method="_on_http_request_completed"]
+[connection signal="button_up" from="HBoxContainer/VBoxContainer/close_button" to="." method="_on_close_button_button_up"]

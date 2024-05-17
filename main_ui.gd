@@ -1,34 +1,38 @@
 extends Control
 
-var API_KEY := ""
-
 func _ready():
-	load_api_key()
+	#%http.request_completed.connect(_test_request_completed)
+	#%http.request("https://api.steampowered.com/ISteamWebAPIUtil/GetSupportedAPIList/v1/")
+	Key.load_api_key()
 	%FileMenu.get_child(0, true).id_pressed.connect(_on_file_menu_selected)
+	%PlayerMenu.get_child(0, true).id_pressed.connect(_on_player_menu_selected)
 
-func load_api_key():
-	var file = FileAccess.open("./key.txt", FileAccess.READ)
-	if file != null:
-		var line = file.get_as_text().split("\n")[0]
-		%KeyPopup/CenterContainer/HBoxContainer/KeyLineEdit.set_text(line)
-		API_KEY=line
-		file.close()
-
-func save_api_key(key):
-	var file = FileAccess.open("./key.txt", FileAccess.WRITE)
-	if file != null:
-		file.store_string(key)
-		API_KEY=key
-	file.close()
 
 func _on_file_menu_selected(index: int):
 	if index == 0: get_tree().quit(0)
-	elif index == 1: %KeyPopup.popup_centered()
+	elif index == 1: Key.show_interface()
+
+func _on_player_menu_selected(index: int):
+	if index == 0: $idPopup.popup_centered()
+	elif index == 1: $urlPopup.popup_centered()
+
+func _test_request_completed(result, response_code, headers, body):
+	print(result)
+	print(response_code)
+	print(headers)
+	print(body.get_string_from_utf8())
 
 
-func _on_key_line_edit_text_changed(new_text):
-	save_api_key(new_text)
+func _on_steam_url_edit_text_submitted(new_text):
+	%Players.add_child(load("res://player_info.tscn").instantiate())
+	%Players.get_child(-1).initialize_by_name(new_text)
 
-func _on_key_line_edit_text_submitted(new_text):
-	%KeyPopup.hide()
-	_on_key_line_edit_text_changed(new_text)
+func _on_url_popup_confirmed():
+	_on_steam_url_edit_text_submitted(%steamURLEdit.text)
+
+func _on_steam_id_edit_text_submitted(new_text):
+	%Players.add_child(load("res://player_info.tscn").instantiate())
+	%Players.get_child(-1).initialize(new_text)
+
+func _on_id_popup_confirmed():
+	_on_steam_id_edit_text_submitted(%steamIDEdit.text)

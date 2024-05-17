@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://bq5lyjailuda4"]
+
+[ext_resource type="Script" path="res://key_manager.gd" id="1_5vyid"]
+
+[node name="KeyPopup" type="Window"]
+title = "change api key"
+size = Vector2i(432, 64)
+visible = false
+script = ExtResource("1_5vyid")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer"]
+layout_mode = 2
+text = "API-key"
+
+[node name="KeyLineEdit" type="LineEdit" parent="CenterContainer/HBoxContainer"]
+custom_minimum_size = Vector2(340, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "################################"
+
+[connection signal="text_changed" from="CenterContainer/HBoxContainer/KeyLineEdit" to="." method="_on_key_line_edit_text_changed"]
+[connection signal="text_submitted" from="CenterContainer/HBoxContainer/KeyLineEdit" to="." method="_on_key_line_edit_text_submitted"]

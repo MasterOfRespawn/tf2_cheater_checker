@@ -32,37 +32,68 @@ popup/item_0/id = 1
 popup/item_1/text = "quit"
 popup/item_1/id = 0
 
-[node name="VBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-visible = false
-layout_mode = 2
-
-[node name="KeyPopup" type="Window" parent="."]
+[node name="PlayerMenu" type="MenuButton" parent="VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
-title = "change api key"
-size = Vector2i(432, 64)
-visible = false
+layout_mode = 2
+text = "Player"
+item_count = 2
+popup/item_0/text = "add by id"
+popup/item_0/id = 0
+popup/item_1/text = "add by name"
+popup/item_1/id = 1
 
-[node name="CenterContainer" type="CenterContainer" parent="KeyPopup"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="KeyPopup/CenterContainer"]
+[node name="VBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="KeyPopup/CenterContainer/HBoxContainer"]
-layout_mode = 2
-text = "API-key"
-
-[node name="KeyLineEdit" type="LineEdit" parent="KeyPopup/CenterContainer/HBoxContainer"]
-custom_minimum_size = Vector2(340, 0)
+[node name="Players" type="TabContainer" parent="VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+show_behind_parent = true
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "################################"
 
-[node name="HTTPRequest" type="HTTPRequest" parent="."]
+[node name="idPopup" type="AcceptDialog" parent="."]
+size = Vector2i(248, 141)
+ok_button_text = "confirm"
 
-[connection signal="text_changed" from="KeyPopup/CenterContainer/HBoxContainer/KeyLineEdit" to="." method="_on_key_line_edit_text_changed"]
-[connection signal="text_submitted" from="KeyPopup/CenterContainer/HBoxContainer/KeyLineEdit" to="." method="_on_key_line_edit_text_submitted"]
+[node name="VBoxContainer" type="VBoxContainer" parent="idPopup"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 240.0
+offset_bottom = 92.0
+
+[node name="Label" type="Label" parent="idPopup/VBoxContainer"]
+layout_mode = 2
+text = "Enter the steam ID of the user 
+and press enter or hit confirm"
+
+[node name="steamIDEdit" type="LineEdit" parent="idPopup/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "0123456789ABCDEF"
+alignment = 1
+
+[node name="urlPopup" type="AcceptDialog" parent="."]
+size = Vector2i(314, 141)
+ok_button_text = "confirm"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="urlPopup"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 306.0
+offset_bottom = 92.0
+
+[node name="Label" type="Label" parent="urlPopup/VBoxContainer"]
+layout_mode = 2
+text = "Enter the steam vanity URL of the user 
+and press enter or hit confirm"
+
+[node name="steamURLEdit" type="LineEdit" parent="urlPopup/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "0123456789ABCDEF"
+alignment = 1
+
+[connection signal="confirmed" from="idPopup" to="." method="_on_id_popup_confirmed"]
+[connection signal="text_submitted" from="idPopup/VBoxContainer/steamIDEdit" to="." method="_on_steam_id_edit_text_submitted"]
+[connection signal="confirmed" from="urlPopup" to="." method="_on_url_popup_confirmed"]
+[connection signal="text_submitted" from="urlPopup/VBoxContainer/steamURLEdit" to="." method="_on_steam_url_edit_text_submitted"]
