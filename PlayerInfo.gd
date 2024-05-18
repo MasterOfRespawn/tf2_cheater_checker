@@ -45,7 +45,6 @@ func initialize(steam_id: String):
 	request_info()
 
 func request_info():
-	#print(%infostep.value)
 	match %infostep.value:
 		1.0: %http.request(STEAM_URL + API_CALLS[1] + Key.get_formatted() + "&vanityurl=" + id)
 		2.0: %http.request(STEAM_URL + API_CALLS[2] + Key.get_formatted() + "&steamids=" + id)
@@ -57,6 +56,9 @@ func request_info():
 		6.0: %http.request(STEAM_URL + API_CALLS[6] + Key.get_formatted() + "&steamid=" + id)
 		7.0: %http.request(STEAM_URL + API_CALLS[7] + Key.get_formatted() + "&steamid=" + id)
 		8.0: %http.request(STEAM_URL + API_CALLS[8] + Key.get_formatted() + "&steamid=" + id)
+		9.0: 
+			%infostep.value += 1 # achievement times are currently not used
+			request_info()
 		100.0: %http.request(profile_picture_url)
 		255.0: 
 			%infostep.visible = false
@@ -118,10 +120,12 @@ func handle_result(result_string):
 				return
 		4.0: #Friends
 			if result.has("friendslist"):
+				var i = 0
 				for friend in result["friendslist"]["friends"]:
 					var f = load("res://steam_display_friend.gd").new()
 					%FriendContainer.add_child(f)
-					f.initialize(friend["steamid"], friend["relationship"], friend["friend_since"])
+					f.initialize(friend["steamid"], friend["relationship"], friend["friend_since"], i)
+					i += 1
 				if len(result["friendslist"]["friends"]) == 0:
 					%FriendContainer.get_child(0).set_text("no friends")
 			else:

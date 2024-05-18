@@ -293,7 +293,7 @@ text = "pyro"
 editable = false
 expand_to_text_length = true
 
-[node name="demo" type="LineEdit" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
+[node name="demoman" type="LineEdit" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
 layout_mode = 2
 text = "demoman"
 editable = false

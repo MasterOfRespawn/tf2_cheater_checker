@@ -24,7 +24,8 @@ func _ready():
 	self.get_child(2).get_child(1).editable = false
 	
 
-func initialize(steam_id: String, relationship: String, time: int):
+func initialize(steam_id: String, relationship: String, time: int, delay: int):
+	await get_tree().create_timer(delay).timeout
 	state = 1
 	id = steam_id
 	if Key.LOAD_FRIENDS:
