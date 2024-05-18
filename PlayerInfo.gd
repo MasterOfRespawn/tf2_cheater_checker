@@ -197,7 +197,6 @@ func resolve_playtimes(data: Dictionary):
 			i = 0
 			continue
 		for level in milestone.get_children():
-			#print(level.name, milestone.name, "TF_" + String(milestone.name).to_upper() + "_ACHIEVE_PROGRESS" + level.name)
 			if data["achievements"].has("TF_" + String(milestone.name).to_upper() + "_ACHIEVE_PROGRESS" + level.name):
 				if data["achievements"]["TF_" + String(milestone.name).to_upper() + "_ACHIEVE_PROGRESS" + level.name]["achieved"] == 1.0:
 					level.set_deferred("button_pressed", true)
