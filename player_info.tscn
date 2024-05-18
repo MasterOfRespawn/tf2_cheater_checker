@@ -1,44 +1,82 @@
-[gd_scene load_steps=3 format=3 uid="uid://boqbb4c23o88c"]
+[gd_scene load_steps=4 format=3 uid="uid://boqbb4c23o88c"]
 
 [ext_resource type="Script" path="res://PlayerInfo.gd" id="1_6sifm"]
 [ext_resource type="Texture2D" uid="uid://dovqa4h5umw3m" path="res://icon.svg" id="2_k8l3g"]
 
-[node name="PlayerInfo" type="CenterContainer"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3mbgo"]
+bg_color = Color(0.333333, 0.333333, 0.333333, 1)
+border_width_left = 16
+border_width_top = 16
+border_width_right = 16
+border_width_bottom = 16
+border_color = Color(0.2, 0.2, 0.2, 1)
+border_blend = true
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color(1, 1, 1, 0.6)
+shadow_size = 4
+
+[node name="PlayerInfo" type="MarginContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
 script = ExtResource("1_6sifm")
 
 [node name="http" type="HTTPRequest" parent="."]
 unique_name_in_owner = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
-layout_mode = 2
-
-[node name="close_button" type="Button" parent="HBoxContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-text = "X"
-
-[node name="infostep" type="ProgressBar" parent="HBoxContainer/VBoxContainer"]
+[node name="infostep" type="ProgressBar" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 max_value = 6.0
 step = 1.0
 allow_greater = true
 
-[node name="PlayerIcon" type="TextureRect" parent="HBoxContainer/VBoxContainer"]
+[node name="close_button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "X"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3mbgo")
+
+[node name="PlayerIcon" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 0
 texture = ExtResource("2_k8l3g")
 stretch_mode = 5
 
-[node name="PlayerSteamID" type="LineEdit" parent="HBoxContainer/VBoxContainer"]
+[node name="BaseInfo" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/BaseInfo"]
+layout_mode = 2
+text = "Basic Account Info"
+
+[node name="PlayerSteamID" type="LineEdit" parent="VBoxContainer/HBoxContainer/BaseInfo"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
@@ -47,23 +85,122 @@ placeholder_text = "STEAMID"
 alignment = 1
 editable = false
 expand_to_text_length = true
-context_menu_enabled = false
 virtual_keyboard_enabled = false
-shortcut_keys_enabled = false
 middle_mouse_paste_enabled = false
 
-[node name="PlayerName" type="LineEdit" parent="HBoxContainer/VBoxContainer"]
+[node name="PlayerName" type="LineEdit" parent="VBoxContainer/HBoxContainer/BaseInfo"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "DEBUGTEST0123456789"
 editable = false
 expand_to_text_length = true
-context_menu_enabled = false
 virtual_keyboard_enabled = false
-shortcut_keys_enabled = false
 middle_mouse_paste_enabled = false
 deselect_on_focus_loss_enabled = false
 drag_and_drop_selection_enabled = false
 
+[node name="AccountCreationDate" type="LineEdit" parent="VBoxContainer/HBoxContainer/BaseInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1999.01.01"
+placeholder_text = "YYYY.MM.DD"
+alignment = 1
+editable = false
+expand_to_text_length = true
+virtual_keyboard_enabled = false
+middle_mouse_paste_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+
+[node name="NoBans" type="Label" parent="VBoxContainer/HBoxContainer/BaseInfo"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "No reported bans"
+
+[node name="BanStatistics" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/BanStatistics"]
+layout_mode = 2
+text = "Community/VAC-Ban Status"
+
+[node name="VACBanned" type="CheckBox" parent="VBoxContainer/HBoxContainer/BanStatistics"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "VAC-Banned"
+
+[node name="CommunityBanned" type="CheckBox" parent="VBoxContainer/HBoxContainer/BanStatistics"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Community-Banned"
+
+[node name="GameBanCounter" type="SpinBox" parent="VBoxContainer/HBoxContainer/BanStatistics"]
+unique_name_in_owner = true
+layout_mode = 2
+allow_greater = true
+allow_lesser = true
+editable = false
+suffix = "game-bans"
+
+[node name="VACBanCounter" type="SpinBox" parent="VBoxContainer/HBoxContainer/BanStatistics"]
+unique_name_in_owner = true
+layout_mode = 2
+allow_greater = true
+allow_lesser = true
+editable = false
+suffix = "VAC-bans"
+
+[node name="DSLB" type="Label" parent="VBoxContainer/HBoxContainer/BanStatistics"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "DAYS_SINCE_LAST_BAN"
+
+[node name="VFlowContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="FriendContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/VFlowContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VFlowContainer/FriendContainer"]
+layout_mode = 2
+text = "Friend list"
+
+[node name="VFlowContainer2" type="ScrollContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="GameContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/VFlowContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VFlowContainer2/GameContainer"]
+layout_mode = 2
+text = "Recent games"
+
+[node name="VFlowContainer3" type="ScrollContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="OwnedGameContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/VFlowContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VFlowContainer3/OwnedGameContainer"]
+layout_mode = 2
+text = "Owned games"
+
 [connection signal="request_completed" from="http" to="." method="_on_http_request_completed"]
-[connection signal="button_up" from="HBoxContainer/VBoxContainer/close_button" to="." method="_on_close_button_button_up"]
+[connection signal="button_up" from="VBoxContainer/close_button" to="." method="_on_close_button_button_up"]

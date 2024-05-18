@@ -6,6 +6,7 @@ func _ready():
 	Key.load_api_key()
 	%FileMenu.get_child(0, true).id_pressed.connect(_on_file_menu_selected)
 	%PlayerMenu.get_child(0, true).id_pressed.connect(_on_player_menu_selected)
+	
 
 
 func _on_file_menu_selected(index: int):
@@ -26,6 +27,7 @@ func _test_request_completed(result, response_code, headers, body):
 func _on_steam_url_edit_text_submitted(new_text):
 	%Players.add_child(load("res://player_info.tscn").instantiate())
 	%Players.get_child(-1).initialize_by_name(new_text)
+	$urlPopup.hide()
 
 func _on_url_popup_confirmed():
 	_on_steam_url_edit_text_submitted(%steamURLEdit.text)
@@ -33,6 +35,11 @@ func _on_url_popup_confirmed():
 func _on_steam_id_edit_text_submitted(new_text):
 	%Players.add_child(load("res://player_info.tscn").instantiate())
 	%Players.get_child(-1).initialize(new_text)
+	$idPopup.hide()
 
 func _on_id_popup_confirmed():
 	_on_steam_id_edit_text_submitted(%steamIDEdit.text)
+
+
+func _on_friend_button_toggled(toggled_on):
+	Key.LOAD_FRIENDS = toggled_on

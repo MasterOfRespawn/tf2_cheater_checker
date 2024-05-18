@@ -42,8 +42,13 @@ popup/item_0/id = 0
 popup/item_1/text = "add by name"
 popup/item_1/id = 1
 
+[node name="FriendButton" type="CheckButton" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "load friend list"
+
 [node name="VBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="Players" type="TabContainer" parent="VBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -93,6 +98,7 @@ layout_mode = 2
 placeholder_text = "0123456789ABCDEF"
 alignment = 1
 
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/FriendButton" to="." method="_on_friend_button_toggled"]
 [connection signal="confirmed" from="idPopup" to="." method="_on_id_popup_confirmed"]
 [connection signal="text_submitted" from="idPopup/VBoxContainer/steamIDEdit" to="." method="_on_steam_id_edit_text_submitted"]
 [connection signal="confirmed" from="urlPopup" to="." method="_on_url_popup_confirmed"]
