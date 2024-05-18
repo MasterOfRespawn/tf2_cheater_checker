@@ -36,7 +36,8 @@ func initialize(steam_id: String, relationship: String, time: int):
 
 func _http_request_completed(_result, _response, _header, data):
 	if state == 1:
-		var dat = JSON.parse_string(data.get_string_from_utf8())
+		var str = data.get_string_from_utf8()
+		var dat = JSON.parse_string(str)
 		self.get_child(2).get_child(0).set_text(dat["response"]["players"][0]["personaname"])
 		self.get_child(0).request(dat["response"]["players"][0]["avatarmedium"])
 		state = 2

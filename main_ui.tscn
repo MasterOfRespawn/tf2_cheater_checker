@@ -44,7 +44,7 @@ popup/item_1/id = 1
 
 [node name="FriendButton" type="CheckButton" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
-text = "load friend list"
+text = "load friend list details"
 
 [node name="VBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2

@@ -41,7 +41,7 @@ layout_mode = 2
 [node name="infostep" type="ProgressBar" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-max_value = 6.0
+max_value = 9.0
 step = 1.0
 allow_greater = true
 
@@ -51,32 +51,32 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 text = "X"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="AccountInfo" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/AccountInfo"]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/AccountInfo/VBoxContainer2"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_3mbgo")
 
-[node name="PlayerIcon" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer"]
+[node name="PlayerIcon" type="TextureRect" parent="VBoxContainer/AccountInfo/VBoxContainer2/PanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
 texture = ExtResource("2_k8l3g")
 stretch_mode = 5
 
-[node name="BaseInfo" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="BaseInfo" type="VBoxContainer" parent="VBoxContainer/AccountInfo"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/BaseInfo"]
+[node name="Label" type="Label" parent="VBoxContainer/AccountInfo/BaseInfo"]
 layout_mode = 2
 text = "Basic Account Info"
 
-[node name="PlayerSteamID" type="LineEdit" parent="VBoxContainer/HBoxContainer/BaseInfo"]
+[node name="PlayerSteamID" type="LineEdit" parent="VBoxContainer/AccountInfo/BaseInfo"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
@@ -88,7 +88,7 @@ expand_to_text_length = true
 virtual_keyboard_enabled = false
 middle_mouse_paste_enabled = false
 
-[node name="PlayerName" type="LineEdit" parent="VBoxContainer/HBoxContainer/BaseInfo"]
+[node name="PlayerName" type="LineEdit" parent="VBoxContainer/AccountInfo/BaseInfo"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "DEBUGTEST0123456789"
@@ -99,7 +99,7 @@ middle_mouse_paste_enabled = false
 deselect_on_focus_loss_enabled = false
 drag_and_drop_selection_enabled = false
 
-[node name="AccountCreationDate" type="LineEdit" parent="VBoxContainer/HBoxContainer/BaseInfo"]
+[node name="AccountCreationDate" type="LineEdit" parent="VBoxContainer/AccountInfo/BaseInfo"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "1999.01.01"
@@ -112,32 +112,42 @@ middle_mouse_paste_enabled = false
 deselect_on_focus_loss_enabled = false
 drag_and_drop_selection_enabled = false
 
-[node name="NoBans" type="Label" parent="VBoxContainer/HBoxContainer/BaseInfo"]
+[node name="suspicion" type="SpinBox" parent="VBoxContainer/AccountInfo/BaseInfo"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+allow_greater = true
+allow_lesser = true
+editable = false
+prefix = "suspicion: "
+suffix = "of 5"
+
+[node name="NoBans" type="Label" parent="VBoxContainer/AccountInfo/BaseInfo"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "No reported bans"
 
-[node name="BanStatistics" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="BanStatistics" type="VBoxContainer" parent="VBoxContainer/AccountInfo"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/BanStatistics"]
+[node name="Label" type="Label" parent="VBoxContainer/AccountInfo/BanStatistics"]
 layout_mode = 2
 text = "Community/VAC-Ban Status"
 
-[node name="VACBanned" type="CheckBox" parent="VBoxContainer/HBoxContainer/BanStatistics"]
+[node name="VACBanned" type="CheckBox" parent="VBoxContainer/AccountInfo/BanStatistics"]
 unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 text = "VAC-Banned"
 
-[node name="CommunityBanned" type="CheckBox" parent="VBoxContainer/HBoxContainer/BanStatistics"]
+[node name="CommunityBanned" type="CheckBox" parent="VBoxContainer/AccountInfo/BanStatistics"]
 unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 text = "Community-Banned"
 
-[node name="GameBanCounter" type="SpinBox" parent="VBoxContainer/HBoxContainer/BanStatistics"]
+[node name="GameBanCounter" type="SpinBox" parent="VBoxContainer/AccountInfo/BanStatistics"]
 unique_name_in_owner = true
 layout_mode = 2
 allow_greater = true
@@ -145,7 +155,7 @@ allow_lesser = true
 editable = false
 suffix = "game-bans"
 
-[node name="VACBanCounter" type="SpinBox" parent="VBoxContainer/HBoxContainer/BanStatistics"]
+[node name="VACBanCounter" type="SpinBox" parent="VBoxContainer/AccountInfo/BanStatistics"]
 unique_name_in_owner = true
 layout_mode = 2
 allow_greater = true
@@ -153,54 +163,370 @@ allow_lesser = true
 editable = false
 suffix = "VAC-bans"
 
-[node name="DSLB" type="Label" parent="VBoxContainer/HBoxContainer/BanStatistics"]
+[node name="DSLB" type="Label" parent="VBoxContainer/AccountInfo/BanStatistics"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "DAYS_SINCE_LAST_BAN"
 
-[node name="VFlowContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="VFlowContainer" type="ScrollContainer" parent="VBoxContainer/AccountInfo"]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="FriendContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/VFlowContainer"]
+[node name="FriendContainer" type="VBoxContainer" parent="VBoxContainer/AccountInfo/VFlowContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VFlowContainer/FriendContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/AccountInfo/VFlowContainer/FriendContainer"]
 layout_mode = 2
 text = "Friend list"
 
-[node name="VFlowContainer2" type="ScrollContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="VFlowContainer2" type="ScrollContainer" parent="VBoxContainer/AccountInfo"]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="GameContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/VFlowContainer2"]
+[node name="GameContainer" type="VBoxContainer" parent="VBoxContainer/AccountInfo/VFlowContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 16
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VFlowContainer2/GameContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/AccountInfo/VFlowContainer2/GameContainer"]
 layout_mode = 2
 text = "Recent games"
 
-[node name="VFlowContainer3" type="ScrollContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="VFlowContainer3" type="ScrollContainer" parent="VBoxContainer/AccountInfo"]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="OwnedGameContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/VFlowContainer3"]
+[node name="OwnedGameContainer" type="VBoxContainer" parent="VBoxContainer/AccountInfo/VFlowContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 16
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VFlowContainer3/OwnedGameContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/AccountInfo/VFlowContainer3/OwnedGameContainer"]
 layout_mode = 2
 text = "Owned games"
+
+[node name="TFInfo" type="HBoxContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ClassLabels" type="VBoxContainer" parent="VBoxContainer/TFInfo"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TFInfo/ClassLabels"]
+layout_mode = 2
+text = "TF2"
+
+[node name="scout" type="Label" parent="VBoxContainer/TFInfo/ClassLabels"]
+layout_mode = 2
+text = "scout"
+
+[node name="soldier" type="Label" parent="VBoxContainer/TFInfo/ClassLabels"]
+layout_mode = 2
+text = "soldier"
+
+[node name="pyro" type="Label" parent="VBoxContainer/TFInfo/ClassLabels"]
+layout_mode = 2
+text = "pyro"
+
+[node name="demo" type="Label" parent="VBoxContainer/TFInfo/ClassLabels"]
+layout_mode = 2
+text = "demoman"
+
+[node name="heavy" type="Label" parent="VBoxContainer/TFInfo/ClassLabels"]
+layout_mode = 2
+text = "heavy"
+
+[node name="engie" type="Label" parent="VBoxContainer/TFInfo/ClassLabels"]
+layout_mode = 2
+text = "engineer"
+
+[node name="sniper" type="Label" parent="VBoxContainer/TFInfo/ClassLabels"]
+layout_mode = 2
+text = "sniper"
+
+[node name="medic" type="Label" parent="VBoxContainer/TFInfo/ClassLabels"]
+layout_mode = 2
+text = "medic"
+
+[node name="spy" type="Label" parent="VBoxContainer/TFInfo/ClassLabels"]
+layout_mode = 2
+text = "spy"
+
+[node name="Playtimes" type="VBoxContainer" parent="VBoxContainer/TFInfo"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TFInfo/Playtimes"]
+layout_mode = 2
+text = "Playtimes"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TFInfo/Playtimes"]
+layout_mode = 2
+
+[node name="PlaytimeValues" type="VBoxContainer" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="scout" type="LineEdit" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
+layout_mode = 2
+text = "scout"
+editable = false
+expand_to_text_length = true
+
+[node name="soldier" type="LineEdit" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
+layout_mode = 2
+text = "soldier"
+editable = false
+expand_to_text_length = true
+
+[node name="pyro" type="LineEdit" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
+layout_mode = 2
+text = "pyro"
+editable = false
+expand_to_text_length = true
+
+[node name="demo" type="LineEdit" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
+layout_mode = 2
+text = "demoman"
+editable = false
+expand_to_text_length = true
+
+[node name="heavy" type="LineEdit" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
+layout_mode = 2
+text = "heavy"
+editable = false
+expand_to_text_length = true
+
+[node name="engineer" type="LineEdit" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
+layout_mode = 2
+text = "engineer"
+editable = false
+expand_to_text_length = true
+
+[node name="sniper" type="LineEdit" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
+layout_mode = 2
+text = "sniper"
+editable = false
+expand_to_text_length = true
+
+[node name="medic" type="LineEdit" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
+layout_mode = 2
+text = "medic"
+editable = false
+expand_to_text_length = true
+
+[node name="spy" type="LineEdit" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
+layout_mode = 2
+text = "spy"
+editable = false
+expand_to_text_length = true
+
+[node name="Milestones" type="VBoxContainer" parent="VBoxContainer/TFInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TFInfo/Milestones"]
+layout_mode = 2
+text = "Class milestones"
+
+[node name="scout" type="HBoxContainer" parent="VBoxContainer/TFInfo/Milestones"]
+layout_mode = 2
+alignment = 1
+
+[node name="1" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/scout"]
+layout_mode = 2
+disabled = true
+text = "1"
+
+[node name="2" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/scout"]
+layout_mode = 2
+disabled = true
+text = "2"
+
+[node name="3" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/scout"]
+layout_mode = 2
+disabled = true
+text = "3"
+
+[node name="soldier" type="HBoxContainer" parent="VBoxContainer/TFInfo/Milestones"]
+layout_mode = 2
+alignment = 1
+
+[node name="1" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/soldier"]
+layout_mode = 2
+disabled = true
+text = "1"
+
+[node name="2" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/soldier"]
+layout_mode = 2
+disabled = true
+text = "2"
+
+[node name="3" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/soldier"]
+layout_mode = 2
+disabled = true
+text = "3"
+
+[node name="pyro" type="HBoxContainer" parent="VBoxContainer/TFInfo/Milestones"]
+layout_mode = 2
+alignment = 1
+
+[node name="1" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/pyro"]
+layout_mode = 2
+disabled = true
+text = "1"
+
+[node name="2" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/pyro"]
+layout_mode = 2
+disabled = true
+text = "2"
+
+[node name="3" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/pyro"]
+layout_mode = 2
+disabled = true
+text = "3"
+
+[node name="demoman" type="HBoxContainer" parent="VBoxContainer/TFInfo/Milestones"]
+layout_mode = 2
+alignment = 1
+
+[node name="1" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/demoman"]
+layout_mode = 2
+disabled = true
+text = "1"
+
+[node name="2" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/demoman"]
+layout_mode = 2
+disabled = true
+text = "2"
+
+[node name="3" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/demoman"]
+layout_mode = 2
+disabled = true
+text = "3"
+
+[node name="heavy" type="HBoxContainer" parent="VBoxContainer/TFInfo/Milestones"]
+layout_mode = 2
+alignment = 1
+
+[node name="1" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/heavy"]
+layout_mode = 2
+disabled = true
+text = "1"
+
+[node name="2" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/heavy"]
+layout_mode = 2
+disabled = true
+text = "2"
+
+[node name="3" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/heavy"]
+layout_mode = 2
+disabled = true
+text = "3"
+
+[node name="engineer" type="HBoxContainer" parent="VBoxContainer/TFInfo/Milestones"]
+layout_mode = 2
+alignment = 1
+
+[node name="1" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/engineer"]
+layout_mode = 2
+disabled = true
+text = "1"
+
+[node name="2" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/engineer"]
+layout_mode = 2
+disabled = true
+text = "2"
+
+[node name="3" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/engineer"]
+layout_mode = 2
+disabled = true
+text = "3"
+
+[node name="sniper" type="HBoxContainer" parent="VBoxContainer/TFInfo/Milestones"]
+layout_mode = 2
+alignment = 1
+
+[node name="1" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/sniper"]
+layout_mode = 2
+disabled = true
+text = "1"
+
+[node name="2" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/sniper"]
+layout_mode = 2
+disabled = true
+text = "2"
+
+[node name="3" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/sniper"]
+layout_mode = 2
+disabled = true
+text = "3"
+
+[node name="medic" type="HBoxContainer" parent="VBoxContainer/TFInfo/Milestones"]
+layout_mode = 2
+alignment = 1
+
+[node name="1" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/medic"]
+layout_mode = 2
+disabled = true
+text = "1"
+
+[node name="2" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/medic"]
+layout_mode = 2
+disabled = true
+text = "2"
+
+[node name="3" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/medic"]
+layout_mode = 2
+disabled = true
+text = "3"
+
+[node name="spy" type="HBoxContainer" parent="VBoxContainer/TFInfo/Milestones"]
+layout_mode = 2
+alignment = 1
+
+[node name="1" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/spy"]
+layout_mode = 2
+disabled = true
+text = "1"
+
+[node name="2" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/spy"]
+layout_mode = 2
+disabled = true
+text = "2"
+
+[node name="3" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/spy"]
+layout_mode = 2
+disabled = true
+text = "3"
+
+[node name="unsorted" type="VBoxContainer" parent="VBoxContainer/TFInfo"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TFInfo/unsorted"]
+visible = false
+layout_mode = 2
+text = "suspicioninfo:
+1 for less than 5 classes played total with more than 50 hours in one class
+1 for invalid class milestones(ones achieved without the prior one)
+1 for an existing VAC-ban 
+1 for the ownership of halloween_doomsday_milestone
+1 for milestone reached without playing milestone class"
+
+[node name="halloweenMilestoneReached" type="CheckBox" parent="VBoxContainer/TFInfo/unsorted"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+disabled = true
+text = "halloween hammer"
 
 [connection signal="request_completed" from="http" to="." method="_on_http_request_completed"]
 [connection signal="button_up" from="VBoxContainer/close_button" to="." method="_on_close_button_button_up"]

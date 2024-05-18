@@ -9,6 +9,8 @@ static var API_CALLS := PackedStringArray(["",
 	"TheoreticalBadgeCall",
 	"IPlayerService/GetRecentlyPlayedGames/v1/?",
 	"IPlayerService/GetOwnedGames/v1/?include_appinfo=true&include_played_free_games=true&",
+	"ISteamUserStats/GetUserStatsForGame/v1/?appid=440&",
+	"ISteamUserStats/GetPlayerAchievements/v1/?appid=440&",
 ])
 
 # 0 uninitialized
@@ -19,6 +21,8 @@ static var API_CALLS := PackedStringArray(["",
 # 5 steam level / badges
 # 6 recently played
 # 7 owned games
+# 8 tf2 stats
+# 9 tf2 achievements (mainly completion times)
 # 100 player icon
 # 255 complete
 var id := ""
@@ -52,9 +56,13 @@ func request_info():
 			request_info()
 		6.0: %http.request(STEAM_URL + API_CALLS[6] + Key.get_formatted() + "&steamid=" + id)
 		7.0: %http.request(STEAM_URL + API_CALLS[7] + Key.get_formatted() + "&steamid=" + id)
+		8.0: %http.request(STEAM_URL + API_CALLS[8] + Key.get_formatted() + "&steamid=" + id)
 		100.0: %http.request(profile_picture_url)
 		255.0: 
 			%infostep.visible = false
+			if %suspicion.value != 0:
+				%suspicion.show()
+				$VBoxContainer/TFInfo/unsorted/Label.show()
 			return
 		_: 
 			push_error("UNREACHABLE STATE REQUEST: ", %infostep.value, "\n", self)
@@ -101,6 +109,7 @@ func handle_result(result_string):
 				%GameBanCounter.value = result["players"][0]["NumberOfGameBans"]
 				if result["players"][0]["VACBanned"] or result["players"][0]["CommunityBanned"]:
 					%DSLB.set_text(str(result["players"][0]["DaysSinceLastBan"])+ " Days since last ban")
+					%suspicion.value += 1
 				else:
 					%NoBans.show()
 					%DSLB.get_parent().hide()
@@ -139,6 +148,12 @@ func handle_result(result_string):
 					%OwnedGameContainer.add_child(l)
 			else:
 				%OwnedGameContainer.get_child(0).set_text("no owned games available")
+		8.0: # statistics
+			if result.has("playerstats"):
+				if result["playerstats"].has("stats"):
+					resolve_playtimes(result["playerstats"])
+			else:
+				%TFInfo.hide()
 			%infostep.value = 99
 		_: # undefined / other
 			push_error("UNREACHABLE STATE TO HANDLE: ", %infostep.value, "\n", self)
@@ -154,3 +169,45 @@ func _on_http_request_completed(result: int, _response_code: int, _headers: Pack
 
 func _on_close_button_button_up():
 	self.queue_free()
+
+func resolve_playtimes(data: Dictionary):
+	var suspicion_conuter = -10
+	for label in %PlaytimeValues.get_children():
+		var identifier := String(label.name).capitalize() + ".accum.iPlayTime"
+		if data["stats"].has(identifier):
+			var playtime = int(data["stats"][identifier]["value"])
+			label.set_text(str(playtime/3600) + "h" + str((playtime/60)%60) + "m" + str(playtime%60) + "s")
+			if playtime/3600 > 50 and suspicion_conuter < 0:
+				suspicion_conuter += 10
+		else:
+			label.set_text("__NOT_PLAYED__")
+			suspicion_conuter += 1
+	if suspicion_conuter > 5: # less then three classes ever played
+		%suspicion.value += 1
+	
+	var i := 1
+	var invalid := false
+	var invalid_class := false
+	for milestone in %Milestones.get_children():
+		if i == 1:
+			i = 0
+			continue
+		for level in milestone.get_children():
+			#print(level.name, milestone.name, "TF_" + String(milestone.name).to_upper() + "_ACHIEVE_PROGRESS" + level.name)
+			if data["achievements"].has("TF_" + String(milestone.name).to_upper() + "_ACHIEVE_PROGRESS" + level.name):
+				if data["achievements"]["TF_" + String(milestone.name).to_upper() + "_ACHIEVE_PROGRESS" + level.name]["achieved"] == 1.0:
+					level.set_deferred("button_pressed", true)
+					if !data["achievements"].has("TF_" + String(milestone.name).to_upper() + "_ACHIEVE_PROGRESS" + str(int(String(level.name))-1)) and int(String(level.name))-1 > 1:
+						invalid = true
+					if %PlaytimeValues.get_node(NodePath(milestone.name)).get_text() == "__NOT_PLAYED__":
+						invalid_class = true
+	if invalid: # previous milestone not reached
+		%suspicion.value += 1
+	if invalid_class: # milestone reached without playing class
+		%suspicion.value += 1
+	
+	for achievement in data["achievements"]:
+		if achievement == "TF_HALLOWEEN_DOOMSDAY_MILESTONE":
+			%halloweenMilestoneReached.set_deferred("button_pressed", true)
+			%suspicion.value += 1
+			%halloweenMilestoneReached.show()
