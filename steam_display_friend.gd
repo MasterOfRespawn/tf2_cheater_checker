@@ -7,6 +7,8 @@ var id := ""
 # 3 done
 var state = 0
 
+var picture_url := ""
+
 func _ready():
 	self.add_child(HTTPRequest.new())
 	self.get_child(0).request_completed.connect(_http_request_completed)
@@ -38,16 +40,27 @@ func initialize(steam_id: String, relationship: String, time: int, delay: int):
 func _http_request_completed(_result, _response, _header, data):
 	if state == 1:
 		var str = data.get_string_from_utf8()
-		var dat = JSON.parse_string(str)
-		self.get_child(2).get_child(0).set_text(dat["response"]["players"][0]["personaname"])
-		self.get_child(0).request(dat["response"]["players"][0]["avatarmedium"])
-		state = 2
+		var json = JSON.new()
+		if json.parse(str) == 0:
+			var dat = json.data
+			self.get_child(2).get_child(0).set_text(dat["response"]["players"][0]["personaname"])
+			picture_url = dat["response"]["players"][0]["avatarmedium"]
+			self.get_child(0).request(picture_url)
+			state = 2
+		else:
+			print("FRIEND PROFILE REQUEST ERROR (RETRYING SOON)[" + id + "]")
+			await get_tree().create_timer(0.5).timeout
+			self.get_child(0).request("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?" + Key.get_formatted() + "&steamids=" + id)
 	elif state == 2:
 		var img = Image.new()
-		img.load_jpg_from_buffer(data)
-		self.get_child(1).get_child(0).set_texture(ImageTexture.create_from_image(img))
-		state = 3
-		self.get_child(0).queue_free()
+		if img.load_jpg_from_buffer(data) == OK:
+			self.get_child(1).get_child(0).set_texture(ImageTexture.create_from_image(img))
+			state = 3
+			self.get_child(0).queue_free()
+		else:
+			print("INVALID AVATAR [" + id + "]")
+			#await get_tree().create_timer(0.5).timeout
+			#self.get_child(0).request(picture_url)
 
 func _view_button_up():
 	get_tree().current_scene._on_steam_id_edit_text_submitted(id)

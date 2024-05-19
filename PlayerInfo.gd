@@ -118,11 +118,11 @@ func handle_result(result_string):
 				return
 		4.0: #Friends
 			if result.has("friendslist"):
-				var i = 0
+				var i := 0
 				for friend in result["friendslist"]["friends"]:
 					var f = load("res://steam_display_friend.gd").new()
 					%FriendContainer.add_child(f)
-					f.initialize(friend["steamid"], friend["relationship"], friend["friend_since"], i)
+					f.initialize(friend["steamid"], friend["relationship"], friend["friend_since"], i / 8)
 					i += 1
 				if len(result["friendslist"]["friends"]) == 0:
 					%FriendContainer.get_child(0).set_text("no friends")
