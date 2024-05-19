@@ -25,15 +25,15 @@ func _ready():
 	
 
 func initialize(steam_id: String, relationship: String, time: int, delay: int):
-	await get_tree().create_timer(delay).timeout
 	state = 1
 	id = steam_id
+	self.get_child(2).get_child(1).set_text(id)
+	self.get_child(2).get_child(2).set_text(relationship + " since " + Time.get_datetime_string_from_unix_time(time))
 	if Key.LOAD_FRIENDS:
+		await get_tree().create_timer(delay).timeout
 		self.get_child(0).request("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?" + Key.get_formatted() + "&steamids=" + id)
 	else:
 		self.get_child(2).get_child(0).hide()
-	self.get_child(2).get_child(1).set_text(id)
-	self.get_child(2).get_child(2).set_text(relationship + " since " + Time.get_datetime_string_from_unix_time(time))
 
 func _http_request_completed(_result, _response, _header, data):
 	if state == 1:
