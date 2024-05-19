@@ -1164,7 +1164,7 @@ unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 text = "4 CoC achievement Milestone (reward: Hammer)
-without valid timeframe"
+"
 
 [node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer"]
 visible = false

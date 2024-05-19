@@ -106,7 +106,7 @@ func handle_result(result_string):
 				%CommunityBanned.button_pressed = result["players"][0]["CommunityBanned"]
 				%VACBanCounter.value = result["players"][0]["NumberOfVACBans"]
 				%GameBanCounter.value = result["players"][0]["NumberOfGameBans"]
-				if result["players"][0]["VACBanned"] or result["players"][0]["CommunityBanned"]:
+				if result["players"][0]["VACBanned"] or result["players"][0]["CommunityBanned"] or result["players"][0]["NumberOfGameBans"] != 0:
 					%DSLB.show()
 					%DSLB.set_text(str(result["players"][0]["DaysSinceLastBan"])+ " Days since last ban")
 					%suspicion.value += 1
@@ -244,7 +244,6 @@ func resolve_various(data: Dictionary):
 	for achievement in data["achievements"]:
 		if achievement == "TF_HALLOWEEN_DOOMSDAY_MILESTONE":
 			%halloweenMilestoneReached.set_deferred("button_pressed", true)
-			%suspicion.value += 1
 			%halloweenMilestoneReached.show()
 
 func resolve_var(data: Dictionary, root: Node):
@@ -265,15 +264,18 @@ func check_achievement_times(achievement_data: Array):
 	for achievement in achievement_data:
 		if achievement["apiname"] == "TF_HALLOWEEN_DOOMSDAY_MILESTONE" and achievement["achieved"] == 1:
 			var time = Time.get_datetime_dict_from_unix_time(int(achievement["unlocktime"]))
+			print(achievement, time)
 			if time["month"] == 10 or (time["month"] == 11 and time["day"] < 8):
 				# valid time to achieve the halloween achievement
 				valid_halloween_time = true
+			%halloweenMilestoneReached.text += "outside valid timeframe (" + Time.get_datetime_string_from_unix_time(int(achievement["unlocktime"])) + ")"
 		if achievement["apiname"].contains("TF_HALLOWEEN_DOOMSDAY") and achievement["achieved"] == 1:
 			tf_halloween_count += 1
-	if valid_halloween_time and tf_halloween_count > 4:
+	if tf_halloween_count > 4:
 		%halloweenMilestoneReached.set_deferred("button_pressed", false)
 
 func check_suspicion():
 	if %suspicion.value != 0:
+		if %halloweenMilestoneReached.button_pressed: %suspicion.value += 1
 		%suspicion.show()
-		$VBoxContainer/HBoxContainer/TFInfo/various/Label2.show()
+		$VBoxContainer/HBoxContainer/Label2.show()
