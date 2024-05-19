@@ -58,6 +58,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="idPopup" type="AcceptDialog" parent="."]
+title = "enter steam id"
 size = Vector2i(248, 141)
 ok_button_text = "confirm"
 
@@ -79,6 +80,7 @@ placeholder_text = "0123456789ABCDEF"
 alignment = 1
 
 [node name="urlPopup" type="AcceptDialog" parent="."]
+title = "enter steam vanity name"
 size = Vector2i(314, 141)
 ok_button_text = "confirm"
 
