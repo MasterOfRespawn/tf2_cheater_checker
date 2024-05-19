@@ -1,7 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://boqbb4c23o88c"]
+[gd_scene load_steps=5 format=3 uid="uid://boqbb4c23o88c"]
 
 [ext_resource type="Script" path="res://PlayerInfo.gd" id="1_6sifm"]
 [ext_resource type="Texture2D" uid="uid://dovqa4h5umw3m" path="res://icon.svg" id="2_k8l3g"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i4gr1"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3mbgo"]
 bg_color = Color(0.333333, 0.333333, 0.333333, 1)
@@ -18,7 +24,7 @@ corner_radius_bottom_left = 24
 shadow_color = Color(1, 1, 1, 0.6)
 shadow_size = 4
 
-[node name="PlayerInfo" type="MarginContainer"]
+[node name="PlayerInfo" type="ScrollContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -26,10 +32,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
+theme_override_styles/panel = SubResource("StyleBoxEmpty_i4gr1")
 script = ExtResource("1_6sifm")
 
 [node name="http" type="HTTPRequest" parent="."]
@@ -165,11 +168,20 @@ suffix = "VAC-bans"
 
 [node name="DSLB" type="Label" parent="VBoxContainer/AccountInfo/BanStatistics"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
+theme_override_colors/font_color = Color(0.937255, 0.141176, 0.380392, 1)
+theme_override_colors/font_shadow_color = Color(0.526171, 0.0339057, 0.3253, 1)
+theme_override_colors/font_outline_color = Color(0.738252, 0, 0.0745495, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 0
 text = "DAYS_SINCE_LAST_BAN"
 
 [node name="VFlowContainer" type="ScrollContainer" parent="VBoxContainer/AccountInfo"]
 layout_mode = 2
+size_flags_horizontal = 3
 horizontal_scroll_mode = 0
 
 [node name="FriendContainer" type="VBoxContainer" parent="VBoxContainer/AccountInfo/VFlowContainer"]
@@ -184,6 +196,7 @@ text = "Friend list"
 
 [node name="VFlowContainer2" type="ScrollContainer" parent="VBoxContainer/AccountInfo"]
 layout_mode = 2
+size_flags_horizontal = 3
 horizontal_scroll_mode = 0
 
 [node name="GameContainer" type="VBoxContainer" parent="VBoxContainer/AccountInfo/VFlowContainer2"]
@@ -199,6 +212,7 @@ text = "Recent games"
 
 [node name="VFlowContainer3" type="ScrollContainer" parent="VBoxContainer/AccountInfo"]
 layout_mode = 2
+size_flags_horizontal = 3
 horizontal_scroll_mode = 0
 
 [node name="OwnedGameContainer" type="VBoxContainer" parent="VBoxContainer/AccountInfo/VFlowContainer3"]
@@ -212,306 +226,947 @@ theme_override_constants/separation = 16
 layout_mode = 2
 text = "Owned games"
 
-[node name="TFInfo" type="HBoxContainer" parent="VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 0
+
+[node name="TFInfo" type="HBoxContainer" parent="VBoxContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ClassLabels" type="VBoxContainer" parent="VBoxContainer/TFInfo"]
+[node name="ClassLabels" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo"]
 layout_mode = 2
 theme_override_constants/separation = 12
 alignment = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/TFInfo/ClassLabels"]
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/TFInfo/ClassLabels"]
 layout_mode = 2
 text = "TF2"
 
-[node name="scout" type="Label" parent="VBoxContainer/TFInfo/ClassLabels"]
+[node name="scout" type="Label" parent="VBoxContainer/ScrollContainer/TFInfo/ClassLabels"]
 layout_mode = 2
 text = "scout"
 
-[node name="soldier" type="Label" parent="VBoxContainer/TFInfo/ClassLabels"]
+[node name="soldier" type="Label" parent="VBoxContainer/ScrollContainer/TFInfo/ClassLabels"]
 layout_mode = 2
 text = "soldier"
 
-[node name="pyro" type="Label" parent="VBoxContainer/TFInfo/ClassLabels"]
+[node name="pyro" type="Label" parent="VBoxContainer/ScrollContainer/TFInfo/ClassLabels"]
 layout_mode = 2
 text = "pyro"
 
-[node name="demo" type="Label" parent="VBoxContainer/TFInfo/ClassLabels"]
+[node name="demo" type="Label" parent="VBoxContainer/ScrollContainer/TFInfo/ClassLabels"]
 layout_mode = 2
 text = "demoman"
 
-[node name="heavy" type="Label" parent="VBoxContainer/TFInfo/ClassLabels"]
+[node name="heavy" type="Label" parent="VBoxContainer/ScrollContainer/TFInfo/ClassLabels"]
 layout_mode = 2
 text = "heavy"
 
-[node name="engie" type="Label" parent="VBoxContainer/TFInfo/ClassLabels"]
+[node name="engie" type="Label" parent="VBoxContainer/ScrollContainer/TFInfo/ClassLabels"]
 layout_mode = 2
 text = "engineer"
 
-[node name="sniper" type="Label" parent="VBoxContainer/TFInfo/ClassLabels"]
+[node name="sniper" type="Label" parent="VBoxContainer/ScrollContainer/TFInfo/ClassLabels"]
 layout_mode = 2
 text = "sniper"
 
-[node name="medic" type="Label" parent="VBoxContainer/TFInfo/ClassLabels"]
+[node name="medic" type="Label" parent="VBoxContainer/ScrollContainer/TFInfo/ClassLabels"]
 layout_mode = 2
 text = "medic"
 
-[node name="spy" type="Label" parent="VBoxContainer/TFInfo/ClassLabels"]
+[node name="spy" type="Label" parent="VBoxContainer/ScrollContainer/TFInfo/ClassLabels"]
 layout_mode = 2
 text = "spy"
 
-[node name="Playtimes" type="VBoxContainer" parent="VBoxContainer/TFInfo"]
+[node name="Playtimes" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/TFInfo/Playtimes"]
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes"]
 layout_mode = 2
-text = "Playtimes"
+text = "Playtimes [total/maxAtOnce]"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TFInfo/Playtimes"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes"]
 layout_mode = 2
 
-[node name="PlaytimeValues" type="VBoxContainer" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer"]
+[node name="PlaytimeValues" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="scout" type="LineEdit" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
+[node name="scout" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
 layout_mode = 2
 text = "scout"
 editable = false
 expand_to_text_length = true
 
-[node name="soldier" type="LineEdit" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
+[node name="soldier" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
 layout_mode = 2
 text = "soldier"
 editable = false
 expand_to_text_length = true
 
-[node name="pyro" type="LineEdit" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
+[node name="pyro" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
 layout_mode = 2
 text = "pyro"
 editable = false
 expand_to_text_length = true
 
-[node name="demoman" type="LineEdit" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
+[node name="demoman" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
 layout_mode = 2
 text = "demoman"
 editable = false
 expand_to_text_length = true
 
-[node name="heavy" type="LineEdit" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
+[node name="heavy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
 layout_mode = 2
 text = "heavy"
 editable = false
 expand_to_text_length = true
 
-[node name="engineer" type="LineEdit" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
+[node name="engineer" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
 layout_mode = 2
 text = "engineer"
 editable = false
 expand_to_text_length = true
 
-[node name="sniper" type="LineEdit" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
+[node name="sniper" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
 layout_mode = 2
 text = "sniper"
 editable = false
 expand_to_text_length = true
 
-[node name="medic" type="LineEdit" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
+[node name="medic" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
 layout_mode = 2
 text = "medic"
 editable = false
 expand_to_text_length = true
 
-[node name="spy" type="LineEdit" parent="VBoxContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
+[node name="spy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues"]
 layout_mode = 2
 text = "spy"
 editable = false
 expand_to_text_length = true
 
-[node name="Milestones" type="VBoxContainer" parent="VBoxContainer/TFInfo"]
+[node name="MaxSessionPlaytime" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/TFInfo/Milestones"]
+[node name="scout" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/MaxSessionPlaytime"]
+layout_mode = 2
+text = "scout"
+editable = false
+expand_to_text_length = true
+
+[node name="soldier" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/MaxSessionPlaytime"]
+layout_mode = 2
+text = "soldier"
+editable = false
+expand_to_text_length = true
+
+[node name="pyro" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/MaxSessionPlaytime"]
+layout_mode = 2
+text = "pyro"
+editable = false
+expand_to_text_length = true
+
+[node name="demoman" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/MaxSessionPlaytime"]
+layout_mode = 2
+text = "demoman"
+editable = false
+expand_to_text_length = true
+
+[node name="heavy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/MaxSessionPlaytime"]
+layout_mode = 2
+text = "heavy"
+editable = false
+expand_to_text_length = true
+
+[node name="engineer" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/MaxSessionPlaytime"]
+layout_mode = 2
+text = "engineer"
+editable = false
+expand_to_text_length = true
+
+[node name="sniper" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/MaxSessionPlaytime"]
+layout_mode = 2
+text = "sniper"
+editable = false
+expand_to_text_length = true
+
+[node name="medic" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/MaxSessionPlaytime"]
+layout_mode = 2
+text = "medic"
+editable = false
+expand_to_text_length = true
+
+[node name="spy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/MaxSessionPlaytime"]
+layout_mode = 2
+text = "spy"
+editable = false
+expand_to_text_length = true
+
+[node name="Milestones" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones"]
 layout_mode = 2
 text = "Class milestones"
 
-[node name="scout" type="HBoxContainer" parent="VBoxContainer/TFInfo/Milestones"]
+[node name="scout" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones"]
 layout_mode = 2
 alignment = 1
 
-[node name="1" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/scout"]
+[node name="1" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/scout"]
 layout_mode = 2
 disabled = true
 text = "1"
 
-[node name="2" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/scout"]
+[node name="2" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/scout"]
 layout_mode = 2
 disabled = true
 text = "2"
 
-[node name="3" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/scout"]
+[node name="3" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/scout"]
 layout_mode = 2
 disabled = true
 text = "3"
 
-[node name="soldier" type="HBoxContainer" parent="VBoxContainer/TFInfo/Milestones"]
+[node name="soldier" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones"]
 layout_mode = 2
 alignment = 1
 
-[node name="1" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/soldier"]
+[node name="1" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/soldier"]
 layout_mode = 2
 disabled = true
 text = "1"
 
-[node name="2" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/soldier"]
+[node name="2" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/soldier"]
 layout_mode = 2
 disabled = true
 text = "2"
 
-[node name="3" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/soldier"]
+[node name="3" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/soldier"]
 layout_mode = 2
 disabled = true
 text = "3"
 
-[node name="pyro" type="HBoxContainer" parent="VBoxContainer/TFInfo/Milestones"]
+[node name="pyro" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones"]
 layout_mode = 2
 alignment = 1
 
-[node name="1" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/pyro"]
+[node name="1" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/pyro"]
 layout_mode = 2
 disabled = true
 text = "1"
 
-[node name="2" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/pyro"]
+[node name="2" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/pyro"]
 layout_mode = 2
 disabled = true
 text = "2"
 
-[node name="3" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/pyro"]
+[node name="3" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/pyro"]
 layout_mode = 2
 disabled = true
 text = "3"
 
-[node name="demoman" type="HBoxContainer" parent="VBoxContainer/TFInfo/Milestones"]
+[node name="demoman" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones"]
 layout_mode = 2
 alignment = 1
 
-[node name="1" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/demoman"]
+[node name="1" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/demoman"]
 layout_mode = 2
 disabled = true
 text = "1"
 
-[node name="2" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/demoman"]
+[node name="2" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/demoman"]
 layout_mode = 2
 disabled = true
 text = "2"
 
-[node name="3" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/demoman"]
+[node name="3" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/demoman"]
 layout_mode = 2
 disabled = true
 text = "3"
 
-[node name="heavy" type="HBoxContainer" parent="VBoxContainer/TFInfo/Milestones"]
+[node name="heavy" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones"]
 layout_mode = 2
 alignment = 1
 
-[node name="1" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/heavy"]
+[node name="1" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/heavy"]
 layout_mode = 2
 disabled = true
 text = "1"
 
-[node name="2" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/heavy"]
+[node name="2" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/heavy"]
 layout_mode = 2
 disabled = true
 text = "2"
 
-[node name="3" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/heavy"]
+[node name="3" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/heavy"]
 layout_mode = 2
 disabled = true
 text = "3"
 
-[node name="engineer" type="HBoxContainer" parent="VBoxContainer/TFInfo/Milestones"]
+[node name="engineer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones"]
 layout_mode = 2
 alignment = 1
 
-[node name="1" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/engineer"]
+[node name="1" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/engineer"]
 layout_mode = 2
 disabled = true
 text = "1"
 
-[node name="2" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/engineer"]
+[node name="2" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/engineer"]
 layout_mode = 2
 disabled = true
 text = "2"
 
-[node name="3" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/engineer"]
+[node name="3" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/engineer"]
 layout_mode = 2
 disabled = true
 text = "3"
 
-[node name="sniper" type="HBoxContainer" parent="VBoxContainer/TFInfo/Milestones"]
+[node name="sniper" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones"]
 layout_mode = 2
 alignment = 1
 
-[node name="1" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/sniper"]
+[node name="1" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/sniper"]
 layout_mode = 2
 disabled = true
 text = "1"
 
-[node name="2" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/sniper"]
+[node name="2" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/sniper"]
 layout_mode = 2
 disabled = true
 text = "2"
 
-[node name="3" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/sniper"]
+[node name="3" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/sniper"]
 layout_mode = 2
 disabled = true
 text = "3"
 
-[node name="medic" type="HBoxContainer" parent="VBoxContainer/TFInfo/Milestones"]
+[node name="medic" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones"]
 layout_mode = 2
 alignment = 1
 
-[node name="1" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/medic"]
+[node name="1" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/medic"]
 layout_mode = 2
 disabled = true
 text = "1"
 
-[node name="2" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/medic"]
+[node name="2" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/medic"]
 layout_mode = 2
 disabled = true
 text = "2"
 
-[node name="3" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/medic"]
+[node name="3" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/medic"]
 layout_mode = 2
 disabled = true
 text = "3"
 
-[node name="spy" type="HBoxContainer" parent="VBoxContainer/TFInfo/Milestones"]
+[node name="spy" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones"]
 layout_mode = 2
 alignment = 1
 
-[node name="1" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/spy"]
+[node name="1" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/spy"]
 layout_mode = 2
 disabled = true
 text = "1"
 
-[node name="2" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/spy"]
+[node name="2" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/spy"]
 layout_mode = 2
 disabled = true
 text = "2"
 
-[node name="3" type="CheckBox" parent="VBoxContainer/TFInfo/Milestones/spy"]
+[node name="3" type="CheckBox" parent="VBoxContainer/ScrollContainer/TFInfo/Milestones/spy"]
 layout_mode = 2
 disabled = true
 text = "3"
 
-[node name="unsorted" type="VBoxContainer" parent="VBoxContainer/TFInfo"]
+[node name="damage" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/TFInfo/unsorted"]
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/TFInfo/damage"]
+layout_mode = 2
+text = "damage [accum/max]"
+
+[node name="iDamageDealt" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/damage"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="accum" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/damage/iDamageDealt"]
+layout_mode = 2
+
+[node name="scout" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/damage/iDamageDealt/accum"]
+layout_mode = 2
+text = "scout"
+editable = false
+expand_to_text_length = true
+
+[node name="soldier" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/damage/iDamageDealt/accum"]
+layout_mode = 2
+text = "soldier"
+editable = false
+expand_to_text_length = true
+
+[node name="pyro" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/damage/iDamageDealt/accum"]
+layout_mode = 2
+text = "pyro"
+editable = false
+expand_to_text_length = true
+
+[node name="demoman" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/damage/iDamageDealt/accum"]
+layout_mode = 2
+text = "demoman"
+editable = false
+expand_to_text_length = true
+
+[node name="heavy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/damage/iDamageDealt/accum"]
+layout_mode = 2
+text = "heavy"
+editable = false
+expand_to_text_length = true
+
+[node name="engineer" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/damage/iDamageDealt/accum"]
+layout_mode = 2
+text = "engineer"
+editable = false
+expand_to_text_length = true
+
+[node name="sniper" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/damage/iDamageDealt/accum"]
+layout_mode = 2
+text = "sniper"
+editable = false
+expand_to_text_length = true
+
+[node name="medic" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/damage/iDamageDealt/accum"]
+layout_mode = 2
+text = "medic"
+editable = false
+expand_to_text_length = true
+
+[node name="spy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/damage/iDamageDealt/accum"]
+layout_mode = 2
+text = "spy"
+editable = false
+expand_to_text_length = true
+
+[node name="max" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/damage/iDamageDealt"]
+layout_mode = 2
+
+[node name="scout" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/damage/iDamageDealt/max"]
+layout_mode = 2
+text = "scout"
+editable = false
+expand_to_text_length = true
+
+[node name="soldier" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/damage/iDamageDealt/max"]
+layout_mode = 2
+text = "soldier"
+editable = false
+expand_to_text_length = true
+
+[node name="pyro" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/damage/iDamageDealt/max"]
+layout_mode = 2
+text = "pyro"
+editable = false
+expand_to_text_length = true
+
+[node name="demoman" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/damage/iDamageDealt/max"]
+layout_mode = 2
+text = "demoman"
+editable = false
+expand_to_text_length = true
+
+[node name="heavy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/damage/iDamageDealt/max"]
+layout_mode = 2
+text = "heavy"
+editable = false
+expand_to_text_length = true
+
+[node name="engineer" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/damage/iDamageDealt/max"]
+layout_mode = 2
+text = "engineer"
+editable = false
+expand_to_text_length = true
+
+[node name="sniper" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/damage/iDamageDealt/max"]
+layout_mode = 2
+text = "sniper"
+editable = false
+expand_to_text_length = true
+
+[node name="medic" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/damage/iDamageDealt/max"]
+layout_mode = 2
+text = "medic"
+editable = false
+expand_to_text_length = true
+
+[node name="spy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/damage/iDamageDealt/max"]
+layout_mode = 2
+text = "spy"
+editable = false
+expand_to_text_length = true
+
+[node name="assists" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/TFInfo/assists"]
+layout_mode = 2
+text = "assists [accum/max]"
+
+[node name="iKillAssists" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/assists"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="accum" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/assists/iKillAssists"]
+layout_mode = 2
+
+[node name="scout" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/assists/iKillAssists/accum"]
+layout_mode = 2
+text = "scout"
+editable = false
+expand_to_text_length = true
+
+[node name="soldier" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/assists/iKillAssists/accum"]
+layout_mode = 2
+text = "soldier"
+editable = false
+expand_to_text_length = true
+
+[node name="pyro" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/assists/iKillAssists/accum"]
+layout_mode = 2
+text = "pyro"
+editable = false
+expand_to_text_length = true
+
+[node name="demoman" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/assists/iKillAssists/accum"]
+layout_mode = 2
+text = "demoman"
+editable = false
+expand_to_text_length = true
+
+[node name="heavy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/assists/iKillAssists/accum"]
+layout_mode = 2
+text = "heavy"
+editable = false
+expand_to_text_length = true
+
+[node name="engineer" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/assists/iKillAssists/accum"]
+layout_mode = 2
+text = "engineer"
+editable = false
+expand_to_text_length = true
+
+[node name="sniper" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/assists/iKillAssists/accum"]
+layout_mode = 2
+text = "sniper"
+editable = false
+expand_to_text_length = true
+
+[node name="medic" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/assists/iKillAssists/accum"]
+layout_mode = 2
+text = "medic"
+editable = false
+expand_to_text_length = true
+
+[node name="spy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/assists/iKillAssists/accum"]
+layout_mode = 2
+text = "spy"
+editable = false
+expand_to_text_length = true
+
+[node name="max" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/assists/iKillAssists"]
+layout_mode = 2
+
+[node name="scout" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/assists/iKillAssists/max"]
+layout_mode = 2
+text = "scout"
+editable = false
+expand_to_text_length = true
+
+[node name="soldier" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/assists/iKillAssists/max"]
+layout_mode = 2
+text = "soldier"
+editable = false
+expand_to_text_length = true
+
+[node name="pyro" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/assists/iKillAssists/max"]
+layout_mode = 2
+text = "pyro"
+editable = false
+expand_to_text_length = true
+
+[node name="demoman" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/assists/iKillAssists/max"]
+layout_mode = 2
+text = "demoman"
+editable = false
+expand_to_text_length = true
+
+[node name="heavy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/assists/iKillAssists/max"]
+layout_mode = 2
+text = "heavy"
+editable = false
+expand_to_text_length = true
+
+[node name="engineer" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/assists/iKillAssists/max"]
+layout_mode = 2
+text = "engineer"
+editable = false
+expand_to_text_length = true
+
+[node name="sniper" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/assists/iKillAssists/max"]
+layout_mode = 2
+text = "sniper"
+editable = false
+expand_to_text_length = true
+
+[node name="medic" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/assists/iKillAssists/max"]
+layout_mode = 2
+text = "medic"
+editable = false
+expand_to_text_length = true
+
+[node name="spy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/assists/iKillAssists/max"]
+layout_mode = 2
+text = "spy"
+editable = false
+expand_to_text_length = true
+
+[node name="kills" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/TFInfo/kills"]
+layout_mode = 2
+text = "kills [accum/max]"
+
+[node name="iNumberOfKills" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/kills"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="accum" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/kills/iNumberOfKills"]
+layout_mode = 2
+
+[node name="scout" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/kills/iNumberOfKills/accum"]
+layout_mode = 2
+text = "scout"
+editable = false
+expand_to_text_length = true
+
+[node name="soldier" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/kills/iNumberOfKills/accum"]
+layout_mode = 2
+text = "soldier"
+editable = false
+expand_to_text_length = true
+
+[node name="pyro" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/kills/iNumberOfKills/accum"]
+layout_mode = 2
+text = "pyro"
+editable = false
+expand_to_text_length = true
+
+[node name="demoman" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/kills/iNumberOfKills/accum"]
+layout_mode = 2
+text = "demoman"
+editable = false
+expand_to_text_length = true
+
+[node name="heavy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/kills/iNumberOfKills/accum"]
+layout_mode = 2
+text = "heavy"
+editable = false
+expand_to_text_length = true
+
+[node name="engineer" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/kills/iNumberOfKills/accum"]
+layout_mode = 2
+text = "engineer"
+editable = false
+expand_to_text_length = true
+
+[node name="sniper" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/kills/iNumberOfKills/accum"]
+layout_mode = 2
+text = "sniper"
+editable = false
+expand_to_text_length = true
+
+[node name="medic" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/kills/iNumberOfKills/accum"]
+layout_mode = 2
+text = "medic"
+editable = false
+expand_to_text_length = true
+
+[node name="spy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/kills/iNumberOfKills/accum"]
+layout_mode = 2
+text = "spy"
+editable = false
+expand_to_text_length = true
+
+[node name="max" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/kills/iNumberOfKills"]
+layout_mode = 2
+
+[node name="scout" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/kills/iNumberOfKills/max"]
+layout_mode = 2
+text = "scout"
+editable = false
+expand_to_text_length = true
+
+[node name="soldier" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/kills/iNumberOfKills/max"]
+layout_mode = 2
+text = "soldier"
+editable = false
+expand_to_text_length = true
+
+[node name="pyro" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/kills/iNumberOfKills/max"]
+layout_mode = 2
+text = "pyro"
+editable = false
+expand_to_text_length = true
+
+[node name="demoman" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/kills/iNumberOfKills/max"]
+layout_mode = 2
+text = "demoman"
+editable = false
+expand_to_text_length = true
+
+[node name="heavy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/kills/iNumberOfKills/max"]
+layout_mode = 2
+text = "heavy"
+editable = false
+expand_to_text_length = true
+
+[node name="engineer" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/kills/iNumberOfKills/max"]
+layout_mode = 2
+text = "engineer"
+editable = false
+expand_to_text_length = true
+
+[node name="sniper" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/kills/iNumberOfKills/max"]
+layout_mode = 2
+text = "sniper"
+editable = false
+expand_to_text_length = true
+
+[node name="medic" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/kills/iNumberOfKills/max"]
+layout_mode = 2
+text = "medic"
+editable = false
+expand_to_text_length = true
+
+[node name="spy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/kills/iNumberOfKills/max"]
+layout_mode = 2
+text = "spy"
+editable = false
+expand_to_text_length = true
+
+[node name="points" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/TFInfo/points"]
+layout_mode = 2
+text = "points [accum/max]"
+
+[node name="iPointsScored" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/points"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="accum" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/points/iPointsScored"]
+layout_mode = 2
+
+[node name="scout" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/points/iPointsScored/accum"]
+layout_mode = 2
+text = "scout"
+editable = false
+expand_to_text_length = true
+
+[node name="soldier" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/points/iPointsScored/accum"]
+layout_mode = 2
+text = "soldier"
+editable = false
+expand_to_text_length = true
+
+[node name="pyro" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/points/iPointsScored/accum"]
+layout_mode = 2
+text = "pyro"
+editable = false
+expand_to_text_length = true
+
+[node name="demoman" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/points/iPointsScored/accum"]
+layout_mode = 2
+text = "demoman"
+editable = false
+expand_to_text_length = true
+
+[node name="heavy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/points/iPointsScored/accum"]
+layout_mode = 2
+text = "heavy"
+editable = false
+expand_to_text_length = true
+
+[node name="engineer" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/points/iPointsScored/accum"]
+layout_mode = 2
+text = "engineer"
+editable = false
+expand_to_text_length = true
+
+[node name="sniper" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/points/iPointsScored/accum"]
+layout_mode = 2
+text = "sniper"
+editable = false
+expand_to_text_length = true
+
+[node name="medic" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/points/iPointsScored/accum"]
+layout_mode = 2
+text = "medic"
+editable = false
+expand_to_text_length = true
+
+[node name="spy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/points/iPointsScored/accum"]
+layout_mode = 2
+text = "spy"
+editable = false
+expand_to_text_length = true
+
+[node name="max" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/points/iPointsScored"]
+layout_mode = 2
+
+[node name="scout" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/points/iPointsScored/max"]
+layout_mode = 2
+text = "scout"
+editable = false
+expand_to_text_length = true
+
+[node name="soldier" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/points/iPointsScored/max"]
+layout_mode = 2
+text = "soldier"
+editable = false
+expand_to_text_length = true
+
+[node name="pyro" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/points/iPointsScored/max"]
+layout_mode = 2
+text = "pyro"
+editable = false
+expand_to_text_length = true
+
+[node name="demoman" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/points/iPointsScored/max"]
+layout_mode = 2
+text = "demoman"
+editable = false
+expand_to_text_length = true
+
+[node name="heavy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/points/iPointsScored/max"]
+layout_mode = 2
+text = "heavy"
+editable = false
+expand_to_text_length = true
+
+[node name="engineer" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/points/iPointsScored/max"]
+layout_mode = 2
+text = "engineer"
+editable = false
+expand_to_text_length = true
+
+[node name="sniper" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/points/iPointsScored/max"]
+layout_mode = 2
+text = "sniper"
+editable = false
+expand_to_text_length = true
+
+[node name="medic" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/points/iPointsScored/max"]
+layout_mode = 2
+text = "medic"
+editable = false
+expand_to_text_length = true
+
+[node name="spy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/points/iPointsScored/max"]
+layout_mode = 2
+text = "spy"
+editable = false
+expand_to_text_length = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="various" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/various"]
+layout_mode = 2
+text = "various statistics"
+
+[node name="Sniper_X_iHeadshots" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/various"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/various/Sniper_X_iHeadshots"]
+layout_mode = 2
+text = "sniper headshots [total/maxRound]"
+
+[node name="accum" type="LineEdit" parent="VBoxContainer/HBoxContainer/various/Sniper_X_iHeadshots"]
+layout_mode = 2
+editable = false
+
+[node name="max" type="LineEdit" parent="VBoxContainer/HBoxContainer/various/Sniper_X_iHeadshots"]
+layout_mode = 2
+editable = false
+
+[node name="Sniper_X_iHeadshotRatio" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/various"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/various/Sniper_X_iHeadshotRatio"]
+layout_mode = 2
+text = "sniper headshot ratio [total/maxRound]"
+
+[node name="accum" type="LineEdit" parent="VBoxContainer/HBoxContainer/various/Sniper_X_iHeadshotRatio"]
+layout_mode = 2
+editable = false
+
+[node name="max" type="LineEdit" parent="VBoxContainer/HBoxContainer/various/Sniper_X_iHeadshotRatio"]
+layout_mode = 2
+editable = false
+
+[node name="Spy_X_iBackstabs" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/various"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/various/Spy_X_iBackstabs"]
+layout_mode = 2
+text = "spy backstabs [total/maxRound]"
+
+[node name="accum" type="LineEdit" parent="VBoxContainer/HBoxContainer/various/Spy_X_iBackstabs"]
+layout_mode = 2
+editable = false
+
+[node name="max" type="LineEdit" parent="VBoxContainer/HBoxContainer/various/Spy_X_iBackstabs"]
+layout_mode = 2
+editable = false
+
+[node name="Spy_X_iBackstabRatio" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/various"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/various/Spy_X_iBackstabRatio"]
+layout_mode = 2
+text = "spy backstab ratio [total/maxRound]"
+
+[node name="accum" type="LineEdit" parent="VBoxContainer/HBoxContainer/various/Spy_X_iBackstabRatio"]
+layout_mode = 2
+editable = false
+
+[node name="max" type="LineEdit" parent="VBoxContainer/HBoxContainer/various/Spy_X_iBackstabRatio"]
+layout_mode = 2
+editable = false
+
+[node name="halloweenMilestoneReached" type="CheckBox" parent="VBoxContainer/HBoxContainer/various"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "4 CoC achievement Milestone (reward: Hammer)
+without valid timeframe"
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer"]
 visible = false
 layout_mode = 2
 text = "suspicioninfo:
@@ -521,12 +1176,12 @@ text = "suspicioninfo:
 1 for the ownership of halloween_doomsday_milestone
 1 for milestone reached without playing milestone class"
 
-[node name="halloweenMilestoneReached" type="CheckBox" parent="VBoxContainer/TFInfo/unsorted"]
-unique_name_in_owner = true
-visible = false
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
-disabled = true
-text = "halloween hammer"
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "suspicious things"
 
 [connection signal="request_completed" from="http" to="." method="_on_http_request_completed"]
 [connection signal="button_up" from="VBoxContainer/close_button" to="." method="_on_close_button_button_up"]

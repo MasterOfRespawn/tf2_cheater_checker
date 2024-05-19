@@ -56,15 +56,11 @@ func request_info():
 		6.0: %http.request(STEAM_URL + API_CALLS[6] + Key.get_formatted() + "&steamid=" + id)
 		7.0: %http.request(STEAM_URL + API_CALLS[7] + Key.get_formatted() + "&steamid=" + id)
 		8.0: %http.request(STEAM_URL + API_CALLS[8] + Key.get_formatted() + "&steamid=" + id)
-		9.0: 
-			%infostep.value += 1 # achievement times are currently not used
-			request_info()
+		9.0: %http.request(STEAM_URL + API_CALLS[9] + Key.get_formatted() + "&steamid=" + id)
 		100.0: %http.request(profile_picture_url)
 		255.0: 
 			%infostep.visible = false
-			if %suspicion.value != 0:
-				%suspicion.show()
-				$VBoxContainer/TFInfo/unsorted/Label.show()
+			check_suspicion()
 			return
 		_: 
 			push_error("UNREACHABLE STATE REQUEST: ", %infostep.value, "\n", self)
@@ -81,6 +77,7 @@ func handle_result(result_string):
 		%infostep.value = 255
 		request_info()
 		return
+	@warning_ignore("shadowed_global_identifier")
 	var str = result_string.get_string_from_utf8()
 	var result: Dictionary = JSON.parse_string(str)
 	match %infostep.value:
@@ -110,6 +107,7 @@ func handle_result(result_string):
 				%VACBanCounter.value = result["players"][0]["NumberOfVACBans"]
 				%GameBanCounter.value = result["players"][0]["NumberOfGameBans"]
 				if result["players"][0]["VACBanned"] or result["players"][0]["CommunityBanned"]:
+					%DSLB.show()
 					%DSLB.set_text(str(result["players"][0]["DaysSinceLastBan"])+ " Days since last ban")
 					%suspicion.value += 1
 				else:
@@ -156,8 +154,17 @@ func handle_result(result_string):
 			if result.has("playerstats"):
 				if result["playerstats"].has("stats"):
 					resolve_playtimes(result["playerstats"])
+					resolve_milestones(result["playerstats"])
+					resolve_various(result["playerstats"])
+					resolve_var(result["playerstats"], %iNumberOfKills)
+					resolve_var(result["playerstats"], %iDamageDealt)
+					resolve_var(result["playerstats"], %iKillAssists)
+					resolve_var(result["playerstats"], %iPointsScored)
 			else:
 				%TFInfo.hide()
+		9.0:
+			if result.has("playerstats"): if result["playerstats"].has("achievements"):
+				check_achievement_times(result["playerstats"]["achievements"])
 			%infostep.value = 99
 		_: # undefined / other
 			push_error("UNREACHABLE STATE TO HANDLE: ", %infostep.value, "\n", self)
@@ -180,7 +187,9 @@ func resolve_playtimes(data: Dictionary):
 		var identifier := String(label.name).capitalize() + ".accum.iPlayTime"
 		if data["stats"].has(identifier):
 			var playtime = int(data["stats"][identifier]["value"])
+			@warning_ignore("integer_division")
 			label.set_text(str(playtime/3600) + "h" + str((playtime/60)%60) + "m" + str(playtime%60) + "s")
+			@warning_ignore("integer_division")
 			if playtime/3600 > 50 and suspicion_conuter < 0:
 				suspicion_conuter += 10
 		else:
@@ -189,6 +198,17 @@ func resolve_playtimes(data: Dictionary):
 	if suspicion_conuter > 5: # less then three classes ever played
 		%suspicion.value += 1
 	
+	for label in %MaxSessionPlaytime.get_children():
+		var identifier := String(label.name).capitalize() + ".max.iPlayTime"
+		if data["stats"].has(identifier):
+			var playtime = int(data["stats"][identifier]["value"])
+			@warning_ignore("integer_division")
+			label.set_text(str(playtime/3600) + "h" + str((playtime/60)%60) + "m" + str(playtime%60) + "s")
+		else:
+			label.set_text("__NOT_SET__")
+	
+
+func resolve_milestones(data: Dictionary):
 	var i := 1
 	var invalid := false
 	var invalid_class := false
@@ -208,9 +228,52 @@ func resolve_playtimes(data: Dictionary):
 		%suspicion.value += 1
 	if invalid_class: # milestone reached without playing class
 		%suspicion.value += 1
+
+func resolve_various(data: Dictionary):
+	if data["stats"].has("Sniper.accum.iHeadshots"): %Sniper_X_iHeadshots/accum.set_text(str(data["stats"]["Sniper.accum.iHeadshots"]["value"]))
+	if data["stats"].has("Sniper.max.iHeadshots"): %Sniper_X_iHeadshots/max.set_text(str(data["stats"]["Sniper.max.iHeadshots"]["value"]))
+	if data["stats"].has("Sniper.accum.iHeadshots"): %Sniper_X_iHeadshotRatio/accum.set_text(str(float(data["stats"]["Sniper.accum.iHeadshots"]["value"]) / float(data["stats"]["Sniper.accum.iNumberOfKills"]["value"])))
+	if data["stats"].has("Sniper.max.iHeadshots"): %Sniper_X_iHeadshotRatio/max.set_text(str(float(data["stats"]["Sniper.max.iHeadshots"]["value"]) / float(data["stats"]["Sniper.max.iNumberOfKills"]["value"])))
+	
+	if data["stats"].has("Spy.accum.iBackstabs"): %Spy_X_iBackstabs/accum.set_text(str(data["stats"]["Spy.accum.iBackstabs"]["value"]))
+	if data["stats"].has("Spy.max.iBackstabs"): %Spy_X_iBackstabs/max.set_text(str(data["stats"]["Spy.max.iBackstabs"]["value"]))
+	if data["stats"].has("Spy.accum.iBackstabs"): %Spy_X_iBackstabRatio/accum.set_text(str(float(data["stats"]["Spy.accum.iBackstabs"]["value"]) / float(data["stats"]["Spy.accum.iNumberOfKills"]["value"])))
+	if data["stats"].has("Spy.max.iBackstabs"): %Spy_X_iBackstabRatio/max.set_text(str(float(data["stats"]["Spy.max.iBackstabs"]["value"]) / float(data["stats"]["Spy.max.iNumberOfKills"]["value"])))
+	
 	
 	for achievement in data["achievements"]:
 		if achievement == "TF_HALLOWEEN_DOOMSDAY_MILESTONE":
 			%halloweenMilestoneReached.set_deferred("button_pressed", true)
 			%suspicion.value += 1
 			%halloweenMilestoneReached.show()
+
+func resolve_var(data: Dictionary, root: Node):
+	var category := String(root.name)
+	for count in root.get_children():
+		var counting_method := String(count.name)
+		for class_label in count.get_children():
+			var c_name := String(class_label.name).capitalize()
+			var data_name := c_name + "." + counting_method + "." + category
+			if data["stats"].has(data_name):
+				class_label.set_text(str(data["stats"][data_name]["value"]))
+			else:
+				class_label.set_text("")
+
+func check_achievement_times(achievement_data: Array):
+	var valid_halloween_time := false
+	var tf_halloween_count := 0
+	for achievement in achievement_data:
+		if achievement["apiname"] == "TF_HALLOWEEN_DOOMSDAY_MILESTONE" and achievement["achieved"] == 1:
+			var time = Time.get_datetime_dict_from_unix_time(int(achievement["unlocktime"]))
+			if time["month"] == 10 or (time["month"] == 11 and time["day"] < 8):
+				# valid time to achieve the halloween achievement
+				valid_halloween_time = true
+		if achievement["apiname"].contains("TF_HALLOWEEN_DOOMSDAY") and achievement["achieved"] == 1:
+			tf_halloween_count += 1
+	if valid_halloween_time and tf_halloween_count > 4:
+		%halloweenMilestoneReached.set_deferred("button_pressed", false)
+
+func check_suspicion():
+	if %suspicion.value != 0:
+		%suspicion.show()
+		$VBoxContainer/HBoxContainer/TFInfo/various/Label2.show()
