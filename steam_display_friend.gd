@@ -8,6 +8,7 @@ var id := ""
 var state = 0
 
 var picture_url := ""
+var retries := 0
 
 signal FRIEND_COMPLETELY_LOADED
 
@@ -51,8 +52,12 @@ func _http_request_completed(_result, _response, _header, data):
 			self.get_child(0).request(picture_url)
 			state = 2
 		else:
-			print("FRIEND PROFILE REQUEST ERROR (RETRYING SOON)[" + id + "]")
-			await get_tree().create_timer(0.5).timeout
+			print("FRIEND PROFILE REQUEST ERROR (RETRYING SOON)[" + id + "] - retry" + str(retries))
+			await get_tree().create_timer(0.5 + (retries*2)).timeout
+			retries += 1
+			if retries == 10:
+				print("TOO MUCH TRAFFIC, GIVING UP [" + id + "]")
+				return
 			self.get_child(0).request("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?" + Key.get_formatted() + "&steamids=" + id)
 	elif state == 2:
 		var img = Image.new()
