@@ -6,7 +6,7 @@ static var API_CALLS := PackedStringArray(["",
 	"ISteamUser/GetPlayerSummaries/v2/?",
 	"ISteamUser/GetPlayerBans/v1/?",
 	"ISteamUser/GetFriendList/v1/?",
-	"TheoreticalBadgeCall",
+	"IPlayerService/GetBadges/v1/?",
 	"IPlayerService/GetRecentlyPlayedGames/v1/?",
 	"IPlayerService/GetOwnedGames/v1/?include_appinfo=true&include_played_free_games=true&",
 	"ISteamUserStats/GetUserStatsForGame/v1/?appid=440&",
@@ -52,9 +52,7 @@ func request_info():
 		2.0: %http.request(STEAM_URL + API_CALLS[2] + Key.get_formatted() + "&steamids=" + id)
 		3.0: %http.request(STEAM_URL + API_CALLS[3] + Key.get_formatted() + "&steamids=" + id)
 		4.0: %http.request(STEAM_URL + API_CALLS[4] + Key.get_formatted() + "&steamid=" + id)
-		5.0: 
-			%infostep.value += 1 # badges are not useful at the moment so they are not requested
-			request_info()
+		5.0: %http.request(STEAM_URL + API_CALLS[5] + Key.get_formatted() + "&steamid=" + id)
 		6.0: %http.request(STEAM_URL + API_CALLS[6] + Key.get_formatted() + "&steamid=" + id)
 		7.0: %http.request(STEAM_URL + API_CALLS[7] + Key.get_formatted() + "&steamid=" + id)
 		8.0: %http.request(STEAM_URL + API_CALLS[8] + Key.get_formatted() + "&steamid=" + id)
@@ -142,7 +140,20 @@ func handle_result(result_string):
 			else:
 				%FriendContainer.get_child(0).set_text("Friends are not accessible")
 				%FriendContainer.get_child(1).hide()
-		# 5.0: # currently not needed
+		5.0: # steam badges and level
+			if result["response"].has("badges"):
+				for badge in result["response"]["badges"]:
+					if badge["badgeid"] == 1:
+						if !badge.has("appid"):
+							%PlayerSteamSteamBadge.set_deferred("button_pressed", true)
+						elif badge["appid"] == 440:
+							%PlayerSteamTfBadge.set_deferred("button_pressed", true)
+			else:
+				%PlayerSteamSteamBadge.get_parent().hide()
+			if result["response"].has("player_level"):
+				%PlayerSteamLevel.set_text("steam level " + str(result["response"]["player_level"]))
+			else:
+				%PlayerSteamLevel.hide()
 		6.0: # recent games
 			if result["response"].has("games"):
 				%GameContainer.get_child(0).set_text("Recent games (" + str(result["response"]["total_count"]) + ")")

@@ -118,12 +118,10 @@ middle_mouse_paste_enabled = false
 deselect_on_focus_loss_enabled = false
 drag_and_drop_selection_enabled = false
 
-[node name="AccountCreationDate2" type="LineEdit" parent="VBoxContainer/AccountInfo/BaseInfo"]
+[node name="PlayerSteamLevel" type="LineEdit" parent="VBoxContainer/AccountInfo/BaseInfo"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
-text = "1999.01.01"
-placeholder_text = "YYYY.MM.DD"
+placeholder_text = "STEAM LEVEL"
 alignment = 1
 editable = false
 expand_to_text_length = true
@@ -131,6 +129,25 @@ virtual_keyboard_enabled = false
 middle_mouse_paste_enabled = false
 deselect_on_focus_loss_enabled = false
 drag_and_drop_selection_enabled = false
+
+[node name="badges" type="HBoxContainer" parent="VBoxContainer/AccountInfo/BaseInfo"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/AccountInfo/BaseInfo/badges"]
+layout_mode = 2
+text = "Badges:"
+
+[node name="PlayerSteamSteamBadge" type="CheckBox" parent="VBoxContainer/AccountInfo/BaseInfo/badges"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Steam"
+
+[node name="PlayerSteamTfBadge" type="CheckBox" parent="VBoxContainer/AccountInfo/BaseInfo/badges"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "TF2"
 
 [node name="suspicion" type="SpinBox" parent="VBoxContainer/AccountInfo/BaseInfo"]
 unique_name_in_owner = true
