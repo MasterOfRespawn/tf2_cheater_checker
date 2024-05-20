@@ -9,6 +9,8 @@ var state = 0
 
 var picture_url := ""
 
+signal FRIEND_COMPLETELY_LOADED
+
 func _ready():
 	self.add_child(HTTPRequest.new())
 	self.get_child(0).request_completed.connect(_http_request_completed)
@@ -39,6 +41,7 @@ func initialize(steam_id: String, relationship: String, time: int, delay: int):
 
 func _http_request_completed(_result, _response, _header, data):
 	if state == 1:
+		@warning_ignore("shadowed_global_identifier")
 		var str = data.get_string_from_utf8()
 		var json = JSON.new()
 		if json.parse(str) == 0:
@@ -55,12 +58,11 @@ func _http_request_completed(_result, _response, _header, data):
 		var img = Image.new()
 		if img.load_jpg_from_buffer(data) == OK:
 			self.get_child(1).get_child(0).set_texture(ImageTexture.create_from_image(img))
-			state = 3
-			self.get_child(0).queue_free()
 		else:
 			print("INVALID AVATAR [" + id + "]")
-			#await get_tree().create_timer(0.5).timeout
-			#self.get_child(0).request(picture_url)
+		state = 3
+		self.get_child(0).queue_free()
+		FRIEND_COMPLETELY_LOADED.emit()
 
 func _view_button_up():
 	get_tree().current_scene._on_steam_id_edit_text_submitted(id)

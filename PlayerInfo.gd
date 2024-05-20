@@ -13,6 +13,8 @@ static var API_CALLS := PackedStringArray(["",
 	"ISteamUserStats/GetPlayerAchievements/v1/?appid=440&",
 ])
 
+var friends_to_load := 0
+
 # 0 uninitialized
 # 1 resolve player name
 # 2 base profile info
@@ -51,7 +53,7 @@ func request_info():
 		3.0: %http.request(STEAM_URL + API_CALLS[3] + Key.get_formatted() + "&steamids=" + id)
 		4.0: %http.request(STEAM_URL + API_CALLS[4] + Key.get_formatted() + "&steamid=" + id)
 		5.0: 
-			%infostep.value += 1 # badges are not useful at the moment so they are ignored
+			%infostep.value += 1 # badges are not useful at the moment so they are not requested
 			request_info()
 		6.0: %http.request(STEAM_URL + API_CALLS[6] + Key.get_formatted() + "&steamid=" + id)
 		7.0: %http.request(STEAM_URL + API_CALLS[7] + Key.get_formatted() + "&steamid=" + id)
@@ -79,6 +81,11 @@ func handle_result(result_string):
 		return
 	@warning_ignore("shadowed_global_identifier")
 	var str = result_string.get_string_from_utf8()
+	var json = JSON.new()
+	if json.parse(str) != 0:
+		await get_tree().create_timer(0.3).timeout
+		request_info()
+		return
 	var result: Dictionary = JSON.parse_string(str)
 	match %infostep.value:
 		1.0: # vanity URL
@@ -109,7 +116,7 @@ func handle_result(result_string):
 				if result["players"][0]["VACBanned"] or result["players"][0]["CommunityBanned"] or result["players"][0]["NumberOfGameBans"] != 0:
 					%DSLB.show()
 					%DSLB.set_text(str(result["players"][0]["DaysSinceLastBan"])+ " Days since last ban")
-					%suspicion.value += 1
+					%"VAC-BAN".button_pressed = true
 				else:
 					%NoBans.show()
 					%DSLB.get_parent().hide()
@@ -122,10 +129,15 @@ func handle_result(result_string):
 				for friend in result["friendslist"]["friends"]:
 					var f = load("res://steam_display_friend.gd").new()
 					%FriendContainer.add_child(f)
+					@warning_ignore("integer_division")
 					f.initialize(friend["steamid"], friend["relationship"], friend["friend_since"], i / 8)
 					i += 1
+					friends_to_load += 1
+					f.FRIEND_COMPLETELY_LOADED.connect(friend_loaded)
 				if len(result["friendslist"]["friends"]) == 0:
 					%FriendContainer.get_child(0).set_text("no friends")
+				else:
+					%FriendContainer.get_child(0).set_text("Friend list (loading)")
 			else:
 				%FriendContainer.get_child(0).set_text("Friends are not accessible")
 		# 5.0: # currently not needed
@@ -189,14 +201,13 @@ func resolve_playtimes(data: Dictionary):
 			var playtime = int(data["stats"][identifier]["value"])
 			@warning_ignore("integer_division")
 			label.set_text(str(playtime/3600) + "h" + str((playtime/60)%60) + "m" + str(playtime%60) + "s")
-			@warning_ignore("integer_division")
-			if playtime/3600 > 50 and suspicion_conuter < 0:
+			if playtime > 50*3600 and suspicion_conuter < 0:
 				suspicion_conuter += 10
 		else:
 			label.set_text("__NOT_PLAYED__")
 			suspicion_conuter += 1
 	if suspicion_conuter > 5: # less then three classes ever played
-		%suspicion.value += 1
+		%invalidPlaytimes.button_pressed = true
 	
 	for label in %MaxSessionPlaytime.get_children():
 		var identifier := String(label.name).capitalize() + ".max.iPlayTime"
@@ -225,9 +236,9 @@ func resolve_milestones(data: Dictionary):
 					if %PlaytimeValues.get_node(NodePath(milestone.name)).get_text() == "__NOT_PLAYED__":
 						invalid_class = true
 	if invalid: # previous milestone not reached
-		%suspicion.value += 1
+		%invalidMilestoneOrder.button_pressed = true
 	if invalid_class: # milestone reached without playing class
-		%suspicion.value += 1
+		%invalidMilestoneObtained.button_pressed = true
 
 func resolve_various(data: Dictionary):
 	if data["stats"].has("Sniper.accum.iHeadshots"): %Sniper_X_iHeadshots/accum.set_text(str(data["stats"]["Sniper.accum.iHeadshots"]["value"]))
@@ -259,15 +270,11 @@ func resolve_var(data: Dictionary, root: Node):
 				class_label.set_text("")
 
 func check_achievement_times(achievement_data: Array):
-	var valid_halloween_time := false
 	var tf_halloween_count := 0
 	for achievement in achievement_data:
 		if achievement["apiname"] == "TF_HALLOWEEN_DOOMSDAY_MILESTONE" and achievement["achieved"] == 1:
+			@warning_ignore("unused_variable")
 			var time = Time.get_datetime_dict_from_unix_time(int(achievement["unlocktime"]))
-			print(achievement, time)
-			if time["month"] == 10 or (time["month"] == 11 and time["day"] < 8):
-				# valid time to achieve the halloween achievement
-				valid_halloween_time = true
 			%halloweenMilestoneReached.text += "outside valid timeframe (" + Time.get_datetime_string_from_unix_time(int(achievement["unlocktime"])) + ")"
 		if achievement["apiname"].contains("TF_HALLOWEEN_DOOMSDAY") and achievement["achieved"] == 1:
 			tf_halloween_count += 1
@@ -275,7 +282,17 @@ func check_achievement_times(achievement_data: Array):
 		%halloweenMilestoneReached.set_deferred("button_pressed", false)
 
 func check_suspicion():
+	%suspicion.set_suffix("of " + str(%suspicionConditions.get_child_count() - 1))
+	for child in %suspicionConditions.get_children():
+		if child.button_pressed:
+			%suspicion.value += 1
 	if %suspicion.value != 0:
-		if %halloweenMilestoneReached.button_pressed: %suspicion.value += 1
 		%suspicion.show()
-		$VBoxContainer/HBoxContainer/Label2.show()
+
+func friend_loaded():
+	friends_to_load -= 1
+	
+	if friends_to_load == 0:
+		%FriendContainer.get_child(0).set_text("Friend list")
+	else:
+		%FriendContainer.get_child(0).set_text("Friend list (loading) [" + str(friends_to_load) + "]")

@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://boqbb4c23o88c"]
+[gd_scene load_steps=6 format=3 uid="uid://boqbb4c23o88c"]
 
 [ext_resource type="Script" path="res://PlayerInfo.gd" id="1_6sifm"]
 [ext_resource type="Texture2D" uid="uid://dovqa4h5umw3m" path="res://icon.svg" id="2_k8l3g"]
+[ext_resource type="Script" path="res://alwaysNotPressed.gd" id="3_ae3av"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i4gr1"]
 content_margin_left = 16.0
@@ -40,6 +41,8 @@ unique_name_in_owner = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="infostep" type="ProgressBar" parent="VBoxContainer"]
 unique_name_in_owner = true
@@ -193,6 +196,10 @@ size_flags_vertical = 3
 [node name="Label" type="Label" parent="VBoxContainer/AccountInfo/VFlowContainer/FriendContainer"]
 layout_mode = 2
 text = "Friend list"
+
+[node name="FriendListSearch" type="LineEdit" parent="VBoxContainer/AccountInfo/VFlowContainer/FriendContainer"]
+layout_mode = 2
+placeholder_text = "search for profile name"
 
 [node name="VFlowContainer2" type="ScrollContainer" parent="VBoxContainer/AccountInfo"]
 layout_mode = 2
@@ -1087,6 +1094,7 @@ expand_to_text_length = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="various" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -1159,13 +1167,6 @@ editable = false
 layout_mode = 2
 editable = false
 
-[node name="halloweenMilestoneReached" type="CheckBox" parent="VBoxContainer/HBoxContainer/various"]
-unique_name_in_owner = true
-layout_mode = 2
-disabled = true
-text = "4 CoC achievement Milestone (reward: Hammer)
-"
-
 [node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer"]
 visible = false
 layout_mode = 2
@@ -1176,12 +1177,46 @@ text = "suspicioninfo:
 1 for the ownership of halloween_doomsday_milestone
 1 for milestone reached without playing milestone class"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="suspicionConditions" type="VFlowContainer" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/suspicionConditions"]
 layout_mode = 2
 text = "suspicious things"
+script = ExtResource("3_ae3av")
+
+[node name="VAC-Ban" type="CheckBox" parent="VBoxContainer/HBoxContainer/suspicionConditions"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "player has a VAC-ban"
+
+[node name="halloweenMilestoneReached" type="CheckBox" parent="VBoxContainer/HBoxContainer/suspicionConditions"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "4 CoC achievement Milestone (reward: Hammer)
+"
+
+[node name="invalidPlaytimes" type="CheckBox" parent="VBoxContainer/HBoxContainer/suspicionConditions"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "less than 5 classes played total with more than 50 hours in one class"
+
+[node name="invalidMilestoneOrder" type="CheckBox" parent="VBoxContainer/HBoxContainer/suspicionConditions"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "invalid class achievement milestone order"
+
+[node name="invalidMilestoneObtained" type="CheckBox" parent="VBoxContainer/HBoxContainer/suspicionConditions"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "achievement milestone without playtime"
 
 [connection signal="request_completed" from="http" to="." method="_on_http_request_completed"]
 [connection signal="button_up" from="VBoxContainer/close_button" to="." method="_on_close_button_button_up"]
