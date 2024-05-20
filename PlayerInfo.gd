@@ -116,7 +116,7 @@ func handle_result(result_string):
 				if result["players"][0]["VACBanned"] or result["players"][0]["CommunityBanned"] or result["players"][0]["NumberOfGameBans"] != 0:
 					%DSLB.show()
 					%DSLB.set_text(str(result["players"][0]["DaysSinceLastBan"])+ " Days since last ban")
-					%"VAC-BAN".button_pressed = true
+					%VAC_Ban.button_pressed = true
 				else:
 					%NoBans.show()
 					%DSLB.get_parent().hide()
@@ -136,10 +136,12 @@ func handle_result(result_string):
 					f.FRIEND_COMPLETELY_LOADED.connect(friend_loaded)
 				if len(result["friendslist"]["friends"]) == 0:
 					%FriendContainer.get_child(0).set_text("no friends")
+					%FriendContainer.get_child(1).hide()
 				else:
 					%FriendContainer.get_child(0).set_text("Friend list (loading)")
 			else:
 				%FriendContainer.get_child(0).set_text("Friends are not accessible")
+				%FriendContainer.get_child(1).hide()
 		# 5.0: # currently not needed
 		6.0: # recent games
 			if result["response"].has("games"):
@@ -172,6 +174,7 @@ func handle_result(result_string):
 					resolve_var(result["playerstats"], %iDamageDealt)
 					resolve_var(result["playerstats"], %iKillAssists)
 					resolve_var(result["playerstats"], %iPointsScored)
+					resolve_var(result["playerstats"], %iBuildingsDestroyed)
 			else:
 				%TFInfo.hide()
 		9.0:
@@ -251,6 +254,12 @@ func resolve_various(data: Dictionary):
 	if data["stats"].has("Spy.accum.iBackstabs"): %Spy_X_iBackstabRatio/accum.set_text(str(float(data["stats"]["Spy.accum.iBackstabs"]["value"]) / float(data["stats"]["Spy.accum.iNumberOfKills"]["value"])))
 	if data["stats"].has("Spy.max.iBackstabs"): %Spy_X_iBackstabRatio/max.set_text(str(float(data["stats"]["Spy.max.iBackstabs"]["value"]) / float(data["stats"]["Spy.max.iNumberOfKills"]["value"])))
 	
+	if data["stats"].has("Medic.accum.iHealthPointsHealed"): %Medic_X_iHealthPointsHealed/accum.set_text(str(data["stats"]["Medic.accum.iHealthPointsHealed"]["value"]))
+	if data["stats"].has("Medic.max.iHealthPointsHealed"): %Medic_X_iHealthPointsHealed/max.set_text(str(data["stats"]["Medic.max.iHealthPointsHealed"]["value"]))
+	if data["stats"].has("Engineer.accum.iNumTeleports"): %Engineer_X_iNumTeleports/accum.set_text(str(data["stats"]["Engineer.accum.iNumTeleports"]["value"]))
+	if data["stats"].has("Engineer.max.iNumTeleports"): %Engineer_X_iNumTeleports/max.set_text(str(data["stats"]["Engineer.max.iNumTeleports"]["value"]))
+	if data["stats"].has("Engineer.accum.iBuildingsBuilt"): %Engineer_X_iBuildingsBuilt/accum.set_text(str(data["stats"]["Engineer.accum.iBuildingsBuilt"]["value"]))
+	if data["stats"].has("Engineer.max.iBuildingsBuilt"): %Engineer_X_iBuildingsBuilt/max.set_text(str(data["stats"]["Engineer.max.iBuildingsBuilt"]["value"]))
 	
 	for achievement in data["achievements"]:
 		if achievement == "TF_HALLOWEEN_DOOMSDAY_MILESTONE":
@@ -296,3 +305,14 @@ func friend_loaded():
 		%FriendContainer.get_child(0).set_text("Friend list")
 	else:
 		%FriendContainer.get_child(0).set_text("Friend list (loading) [" + str(friends_to_load) + "]")
+
+
+func _on_friend_list_search_text_changed(new_text):
+	var ignore_ui := 2
+	for child in %FriendContainer.get_children():
+		if ignore_ui != 0:
+			ignore_ui -= 1
+			continue
+		if child.get_child_count() == 3: continue # still loading
+		child.visible = child.get_child(1).get_child(0).get_text().to_lower().contains(new_text.to_lower()) or new_text.to_lower().contains(child.get_child(1).get_child(0).get_text().to_lower())
+		if new_text == "": child.visible = true

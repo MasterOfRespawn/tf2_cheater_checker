@@ -118,6 +118,20 @@ middle_mouse_paste_enabled = false
 deselect_on_focus_loss_enabled = false
 drag_and_drop_selection_enabled = false
 
+[node name="AccountCreationDate2" type="LineEdit" parent="VBoxContainer/AccountInfo/BaseInfo"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "1999.01.01"
+placeholder_text = "YYYY.MM.DD"
+alignment = 1
+editable = false
+expand_to_text_length = true
+virtual_keyboard_enabled = false
+middle_mouse_paste_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+
 [node name="suspicion" type="SpinBox" parent="VBoxContainer/AccountInfo/BaseInfo"]
 unique_name_in_owner = true
 visible = false
@@ -1092,6 +1106,131 @@ text = "spy"
 editable = false
 expand_to_text_length = true
 
+[node name="destroyed_buildings" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings"]
+layout_mode = 2
+text = "destroyed buildings [accum/max]"
+
+[node name="iBuildingsDestroyed" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="accum" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings/iBuildingsDestroyed"]
+layout_mode = 2
+
+[node name="scout" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings/iBuildingsDestroyed/accum"]
+layout_mode = 2
+text = "scout"
+editable = false
+expand_to_text_length = true
+
+[node name="soldier" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings/iBuildingsDestroyed/accum"]
+layout_mode = 2
+text = "soldier"
+editable = false
+expand_to_text_length = true
+
+[node name="pyro" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings/iBuildingsDestroyed/accum"]
+layout_mode = 2
+text = "pyro"
+editable = false
+expand_to_text_length = true
+
+[node name="demoman" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings/iBuildingsDestroyed/accum"]
+layout_mode = 2
+text = "demoman"
+editable = false
+expand_to_text_length = true
+
+[node name="heavy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings/iBuildingsDestroyed/accum"]
+layout_mode = 2
+text = "heavy"
+editable = false
+expand_to_text_length = true
+
+[node name="engineer" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings/iBuildingsDestroyed/accum"]
+layout_mode = 2
+text = "engineer"
+editable = false
+expand_to_text_length = true
+
+[node name="sniper" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings/iBuildingsDestroyed/accum"]
+layout_mode = 2
+text = "sniper"
+editable = false
+expand_to_text_length = true
+
+[node name="medic" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings/iBuildingsDestroyed/accum"]
+layout_mode = 2
+text = "medic"
+editable = false
+expand_to_text_length = true
+
+[node name="spy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings/iBuildingsDestroyed/accum"]
+layout_mode = 2
+text = "spy"
+editable = false
+expand_to_text_length = true
+
+[node name="max" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings/iBuildingsDestroyed"]
+layout_mode = 2
+
+[node name="scout" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings/iBuildingsDestroyed/max"]
+layout_mode = 2
+text = "scout"
+editable = false
+expand_to_text_length = true
+
+[node name="soldier" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings/iBuildingsDestroyed/max"]
+layout_mode = 2
+text = "soldier"
+editable = false
+expand_to_text_length = true
+
+[node name="pyro" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings/iBuildingsDestroyed/max"]
+layout_mode = 2
+text = "pyro"
+editable = false
+expand_to_text_length = true
+
+[node name="demoman" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings/iBuildingsDestroyed/max"]
+layout_mode = 2
+text = "demoman"
+editable = false
+expand_to_text_length = true
+
+[node name="heavy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings/iBuildingsDestroyed/max"]
+layout_mode = 2
+text = "heavy"
+editable = false
+expand_to_text_length = true
+
+[node name="engineer" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings/iBuildingsDestroyed/max"]
+layout_mode = 2
+text = "engineer"
+editable = false
+expand_to_text_length = true
+
+[node name="sniper" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings/iBuildingsDestroyed/max"]
+layout_mode = 2
+text = "sniper"
+editable = false
+expand_to_text_length = true
+
+[node name="medic" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings/iBuildingsDestroyed/max"]
+layout_mode = 2
+text = "medic"
+editable = false
+expand_to_text_length = true
+
+[node name="spy" type="LineEdit" parent="VBoxContainer/ScrollContainer/TFInfo/destroyed_buildings/iBuildingsDestroyed/max"]
+layout_mode = 2
+text = "spy"
+editable = false
+expand_to_text_length = true
+
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -1153,6 +1292,7 @@ editable = false
 
 [node name="Spy_X_iBackstabRatio" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/various"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/various/Spy_X_iBackstabRatio"]
@@ -1164,6 +1304,54 @@ layout_mode = 2
 editable = false
 
 [node name="max" type="LineEdit" parent="VBoxContainer/HBoxContainer/various/Spy_X_iBackstabRatio"]
+layout_mode = 2
+editable = false
+
+[node name="Medic_X_iHealthPointsHealed" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/various"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/various/Medic_X_iHealthPointsHealed"]
+layout_mode = 2
+text = "medic health healed [total/maxRound]"
+
+[node name="accum" type="LineEdit" parent="VBoxContainer/HBoxContainer/various/Medic_X_iHealthPointsHealed"]
+layout_mode = 2
+editable = false
+
+[node name="max" type="LineEdit" parent="VBoxContainer/HBoxContainer/various/Medic_X_iHealthPointsHealed"]
+layout_mode = 2
+editable = false
+
+[node name="Engineer_X_iNumTeleports" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/various"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/various/Engineer_X_iNumTeleports"]
+layout_mode = 2
+text = "engineer teleports [total/maxRound]"
+
+[node name="accum" type="LineEdit" parent="VBoxContainer/HBoxContainer/various/Engineer_X_iNumTeleports"]
+layout_mode = 2
+editable = false
+
+[node name="max" type="LineEdit" parent="VBoxContainer/HBoxContainer/various/Engineer_X_iNumTeleports"]
+layout_mode = 2
+editable = false
+
+[node name="Engineer_X_iBuildingsBuilt" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/various"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/various/Engineer_X_iBuildingsBuilt"]
+layout_mode = 2
+text = "engineer buildings built [total/maxRound]"
+
+[node name="accum" type="LineEdit" parent="VBoxContainer/HBoxContainer/various/Engineer_X_iBuildingsBuilt"]
+layout_mode = 2
+editable = false
+
+[node name="max" type="LineEdit" parent="VBoxContainer/HBoxContainer/various/Engineer_X_iBuildingsBuilt"]
 layout_mode = 2
 editable = false
 
@@ -1187,7 +1375,7 @@ layout_mode = 2
 text = "suspicious things"
 script = ExtResource("3_ae3av")
 
-[node name="VAC-Ban" type="CheckBox" parent="VBoxContainer/HBoxContainer/suspicionConditions"]
+[node name="VAC_Ban" type="CheckBox" parent="VBoxContainer/HBoxContainer/suspicionConditions"]
 unique_name_in_owner = true
 layout_mode = 2
 disabled = true
@@ -1220,3 +1408,4 @@ text = "achievement milestone without playtime"
 
 [connection signal="request_completed" from="http" to="." method="_on_http_request_completed"]
 [connection signal="button_up" from="VBoxContainer/close_button" to="." method="_on_close_button_button_up"]
+[connection signal="text_changed" from="VBoxContainer/AccountInfo/VFlowContainer/FriendContainer/FriendListSearch" to="." method="_on_friend_list_search_text_changed"]
