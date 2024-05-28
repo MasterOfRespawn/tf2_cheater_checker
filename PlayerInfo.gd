@@ -264,7 +264,9 @@ func resolve_milestones(data: Dictionary):
 func resolve_various(data: Dictionary):
 	if data["stats"].has("Sniper.accum.iHeadshots"): %Sniper_X_iHeadshots/accum.set_text(str(data["stats"]["Sniper.accum.iHeadshots"]["value"]))
 	if data["stats"].has("Sniper.max.iHeadshots"): %Sniper_X_iHeadshots/max.set_text(str(data["stats"]["Sniper.max.iHeadshots"]["value"]))
-	if data["stats"].has("Sniper.accum.iHeadshots"): %Sniper_X_iHeadshotRatio/accum.set_text(str(float(data["stats"]["Sniper.accum.iHeadshots"]["value"]) / float(data["stats"]["Sniper.accum.iNumberOfKills"]["value"])))
+	if data["stats"].has("Sniper.accum.iHeadshots"): 
+		%Sniper_X_iHeadshotRatio/accum.set_text(str(float(data["stats"]["Sniper.accum.iHeadshots"]["value"]) / float(data["stats"]["Sniper.accum.iNumberOfKills"]["value"])))
+		if float(%Sniper_X_iHeadshotRatio/accum.get_text()) > 0.6: %highSniperHeadshotRate.button_pressed = true
 	if data["stats"].has("Sniper.max.iHeadshots"): %Sniper_X_iHeadshotRatio/max.set_text(str(float(data["stats"]["Sniper.max.iHeadshots"]["value"]) / float(data["stats"]["Sniper.max.iNumberOfKills"]["value"])))
 	
 	if data["stats"].has("Spy.accum.iBackstabs"): %Spy_X_iBackstabs/accum.set_text(str(data["stats"]["Spy.accum.iBackstabs"]["value"]))
