@@ -304,7 +304,7 @@ func check_achievement_times(achievement_data: Array):
 		if achievement["apiname"] == "TF_HALLOWEEN_DOOMSDAY_MILESTONE" and achievement["achieved"] == 1:
 			@warning_ignore("unused_variable")
 			var time = Time.get_datetime_dict_from_unix_time(int(achievement["unlocktime"]))
-			%halloweenMilestoneReached.text += "outside valid timeframe (" + Time.get_datetime_string_from_unix_time(int(achievement["unlocktime"])) + ")"
+			%halloweenMilestoneReached.text += "( achieved at: " + Time.get_datetime_string_from_unix_time(int(achievement["unlocktime"])) + ")"
 		if achievement["apiname"].contains("TF_HALLOWEEN_DOOMSDAY") and achievement["achieved"] == 1:
 			tf_halloween_count += 1
 	if tf_halloween_count > 4:
