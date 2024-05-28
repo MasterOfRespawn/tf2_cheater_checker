@@ -1259,6 +1259,33 @@ layout_mode = 2
 layout_mode = 2
 text = "various statistics"
 
+[node name="playtimes" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/various"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/various/playtimes"]
+layout_mode = 2
+text = "time running"
+
+[node name="playtime" type="SpinBox" parent="VBoxContainer/HBoxContainer/various/playtimes"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+allow_greater = true
+editable = false
+suffix = "m"
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer/various/playtimes"]
+layout_mode = 2
+text = "time on servers"
+
+[node name="totalPlaytime" type="SpinBox" parent="VBoxContainer/HBoxContainer/various/playtimes"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+allow_greater = true
+editable = false
+suffix = "m"
+
 [node name="Sniper_X_iHeadshots" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/various"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -1422,6 +1449,12 @@ unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 text = "achievement milestone without playtime"
+
+[node name="tooLowActualPlaytime" type="CheckBox" parent="VBoxContainer/HBoxContainer/suspicionConditions"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "less than 10% actual Playtime in game"
 
 [connection signal="request_completed" from="http" to="." method="_on_http_request_completed"]
 [connection signal="button_up" from="VBoxContainer/close_button" to="." method="_on_close_button_button_up"]

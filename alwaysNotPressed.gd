@@ -1,4 +1,4 @@
-extends Label
+extends Node
 var button_pressed := false :
 	get:
 		return false

@@ -159,6 +159,8 @@ func handle_result(result_string):
 				%GameContainer.get_child(0).set_text("Recent games (" + str(result["response"]["total_count"]) + ")")
 				for game in result["response"]["games"]:
 					var l = Label.new()
+					if game["appid"] == 440:
+						%playtime.value = game["playtime_forever"]
 					l.set_text(game["name"] + " [" + str(game["appid"]) + "]\nTotal: " + str(
 						int(game["playtime_forever"]/60)) + "h" + str(int(game["playtime_forever"])%60)+"m\nLast2Weeks: " + str(
 						int(game["playtime_2weeks"]/60)) + "h" + str(int(game["playtime_2weeks"])%60)+"m\n")
@@ -170,6 +172,8 @@ func handle_result(result_string):
 				%OwnedGameContainer.get_child(0).set_text("Owned games (" + str(result["response"]["game_count"]) + ")")
 				for game in result["response"]["games"]:
 					var l = Label.new()
+					if game["appid"] == 440:
+						%playtime.value = game["playtime_forever"]
 					l.set_text(game["name"] + " [" + str(game["appid"]) + "]\nTotal: " + str(
 						int(game["playtime_forever"]/60)) + "h" + str(int(game["playtime_forever"])%60)+"m")
 					%OwnedGameContainer.add_child(l)
@@ -217,6 +221,7 @@ func resolve_playtimes(data: Dictionary):
 			label.set_text(str(playtime/3600) + "h" + str((playtime/60)%60) + "m" + str(playtime%60) + "s")
 			if playtime > 50*3600 and suspicion_conuter < 0:
 				suspicion_conuter += 10
+			%totalPlaytime.value += int(playtime / 60)
 		else:
 			label.set_text("__NOT_PLAYED__")
 			suspicion_conuter += 1
@@ -231,6 +236,8 @@ func resolve_playtimes(data: Dictionary):
 			label.set_text(str(playtime/3600) + "h" + str((playtime/60)%60) + "m" + str(playtime%60) + "s")
 		else:
 			label.set_text("__NOT_SET__")
+	
+	if %playtime.value / 10 > %totalPlaytime.value: %tooLowActualPlaytime.button_pressed = true
 	
 
 func resolve_milestones(data: Dictionary):
