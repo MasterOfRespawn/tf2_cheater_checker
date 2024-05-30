@@ -33,3 +33,19 @@ window/size/viewport_height=840
 
 version_control/plugin_name="GitPlugin"
 version_control/autoload_on_startup=true
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+environment/ssao/quality=0
+environment/ssao/adaptive_target=0.0
+environment/ssao/blur_passes=0
+environment/ssao/fadeout_from=0.0
+environment/ssao/fadeout_to=64.0
+environment/ssil/quality=0
+environment/glow/upscale_mode=0
+environment/screen_space_reflection/roughness_quality=0
+environment/subsurface_scattering/subsurface_scattering_quality=0
+environment/subsurface_scattering/subsurface_scattering_scale=0.001
+environment/defaults/default_environment="res://default_env.tres"

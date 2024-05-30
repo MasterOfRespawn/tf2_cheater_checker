@@ -221,7 +221,8 @@ func resolve_playtimes(data: Dictionary):
 			label.set_text(str(playtime/3600) + "h" + str((playtime/60)%60) + "m" + str(playtime%60) + "s")
 			if playtime > 50*3600 and suspicion_conuter < 0:
 				suspicion_conuter += 10
-			%totalPlaytime.value += int(playtime / 60)
+			@warning_ignore("integer_division")
+			%totalPlaytime.value += playtime / 60
 		else:
 			label.set_text("__NOT_PLAYED__")
 			suspicion_conuter += 1
