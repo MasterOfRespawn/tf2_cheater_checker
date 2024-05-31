@@ -2,6 +2,8 @@ extends Window
 
 var API_KEY := ""
 var LOAD_FRIENDS := true
+var HEADLESS := false
+var HEADLESS_TODO := 0
 
 func load_api_key():
 	var file = FileAccess.open("./key.txt", FileAccess.READ)

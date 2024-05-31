@@ -26,6 +26,7 @@ var friends_to_load := 0
 # 8 tf2 stats
 # 9 tf2 achievements (mainly completion times)
 # 100 player icon
+# 200 dump player info on cli mode
 # 255 complete
 var id := ""
 var profile_picture_url := ""
@@ -57,10 +58,34 @@ func request_info():
 		7.0: %http.request(STEAM_URL + API_CALLS[7] + Key.get_formatted() + "&steamid=" + id)
 		8.0: %http.request(STEAM_URL + API_CALLS[8] + Key.get_formatted() + "&steamid=" + id)
 		9.0: %http.request(STEAM_URL + API_CALLS[9] + Key.get_formatted() + "&steamid=" + id)
+		98.0:
+			check_suspicion()
+			%infostep.value += 1
+			request_info()
+		99.0:
+			if Key.HEADLESS:
+				var out = "[\"" + id + "\"]\n"
+				out += "name=\"" + %PlayerName.text + "\"\n"
+				out += "suspicion=" + str(%suspicion.value) + "\n"
+				out += "inaccesable=" + str(!%TFInfo.visible) + "\n"
+				var ignore := true
+				for suspicion in %suspicionConditions.get_children():
+					if ignore:
+						ignore = false
+						continue
+					out += suspicion.get_name() + "=" + str(suspicion.button_pressed) + "\n"
+				print(out)
+				Key.HEADLESS_TODO -= 1
+				await get_tree().create_timer(1).timeout
+				if Key.HEADLESS_TODO == 0:
+					get_tree().quit()
+				self.queue_free()
+				return
+			%infostep.value = 100
+			request_info()
 		100.0: %http.request(profile_picture_url)
 		255.0: 
 			%infostep.visible = false
-			check_suspicion()
 			return
 		_: 
 			push_error("UNREACHABLE STATE REQUEST: ", %infostep.value, "\n", self)
@@ -195,7 +220,7 @@ func handle_result(result_string):
 		9.0:
 			if result.has("playerstats"): if result["playerstats"].has("achievements"):
 				check_achievement_times(result["playerstats"]["achievements"])
-			%infostep.value = 99
+			%infostep.value = 97
 		_: # undefined / other
 			push_error("UNREACHABLE STATE TO HANDLE: ", %infostep.value, "\n", self)
 			return

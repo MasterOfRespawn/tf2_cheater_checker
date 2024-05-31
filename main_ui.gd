@@ -1,12 +1,20 @@
 extends Control
 
 func _ready():
-	#%http.request_completed.connect(_test_request_completed)
-	#%http.request("https://api.steampowered.com/ISteamWebAPIUtil/GetSupportedAPIList/v1/")
 	Key.load_api_key()
 	%FileMenu.get_child(0, true).id_pressed.connect(_on_file_menu_selected)
 	%PlayerMenu.get_child(0, true).id_pressed.connect(_on_player_menu_selected)
 	
+	var args = OS.get_cmdline_user_args()
+	if len(args) > 0:
+		Key.HEADLESS = true
+		Key.LOAD_FRIENDS = false
+		Key.HEADLESS_TODO = len(args)
+		#print(args)
+		for arg in args:
+			#print(arg)
+			_on_steam_id_edit_text_submitted(arg)
+			await get_tree().create_timer(1).timeout
 
 
 func _on_file_menu_selected(index: int):
