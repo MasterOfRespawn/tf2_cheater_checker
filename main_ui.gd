@@ -7,6 +7,9 @@ func _ready():
 	
 	var args = OS.get_cmdline_user_args()
 	if len(args) > 0:
+		if Key.API_KEY == "":
+			printerr("ADD API KEY FIRST!")
+			get_tree().quit()
 		Key.HEADLESS = true
 		Key.LOAD_FRIENDS = false
 		Key.HEADLESS_TODO = len(args)
