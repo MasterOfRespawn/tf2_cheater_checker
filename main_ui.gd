@@ -10,6 +10,7 @@ func _ready():
 		if Key.API_KEY == "":
 			printerr("ADD API KEY FIRST!")
 			get_tree().quit()
+		print(" --- tf2ccOut --- ")
 		Key.HEADLESS = true
 		Key.LOAD_FRIENDS = false
 		Key.HEADLESS_TODO = len(args)
@@ -18,6 +19,12 @@ func _ready():
 			#print(arg)
 			_on_steam_id_edit_text_submitted(arg)
 			await get_tree().create_timer(1).timeout
+	args = OS.get_cmdline_args()
+	if len(args) > 0 and !Key.HEADLESS:
+		print("TF2CC - usage")
+		print(OS.get_executable_path() + " [--headless] -- {IDs}")
+		print("--headless - disable window")
+		print("   {IDs}   - space seperated list of steam profile ids (64bit int)")
 
 
 func _on_file_menu_selected(index: int):
