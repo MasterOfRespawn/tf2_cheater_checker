@@ -138,7 +138,7 @@ func handle_result(result_string):
 					queue_free()
 				return
 		3.0: # Bans
-			if Key.HEADLESS: %infostep.value += 1
+			if Key.HEADLESS: %infostep.value += 2
 			if len(result["players"]) != 0:
 				%VACBanned.button_pressed = result["players"][0]["VACBanned"]
 				%CommunityBanned.button_pressed = result["players"][0]["CommunityBanned"]
