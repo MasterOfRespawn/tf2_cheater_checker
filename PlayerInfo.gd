@@ -70,7 +70,12 @@ func request_info():
 				out += "inaccesable=" + str(!%TFInfo.visible) + "\n"
 				out += "playtime=" + str(%playtime.value) + "\n"
 				out += "playtimeAsClasses=" + str(%totalPlaytime.value) + "\n"
-				out += "sniperPlaytime=" + str($VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues/sniper.text) + "\n"
+				var sniperTime: String = $VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues/sniper.text
+				var sniperTimeInt = 0
+				if sniperTime != "sniper":
+					sniperTimeInt += int(sniperTime.split("h")[0]) * 60
+					sniperTimeInt += int(sniperTime.split("h")[1].split("m")[0])
+				out += "sniperPlaytime=" + str(sniperTimeInt) + "\n"
 				var ignore := true
 				for suspicion in %suspicionConditions.get_children():
 					if ignore:
