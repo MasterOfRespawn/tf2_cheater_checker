@@ -24,7 +24,7 @@ var friends_to_load := 0
 # 6 recently played
 # 7 owned games
 # 8 tf2 stats
-# 9 tf2 achievements (mainly completion times)
+# 9 tf2 achievements (mainly completion times) [REDUNDANT, DISABLED]
 # 100 player icon
 # 200 dump player info on cli mode
 # 255 complete
@@ -57,7 +57,7 @@ func request_info():
 		6.0: %http.request(STEAM_URL + API_CALLS[6] + Key.get_formatted() + "&steamid=" + id)
 		7.0: %http.request(STEAM_URL + API_CALLS[7] + Key.get_formatted() + "&steamid=" + id)
 		8.0: %http.request(STEAM_URL + API_CALLS[8] + Key.get_formatted() + "&steamid=" + id)
-		9.0: %http.request(STEAM_URL + API_CALLS[9] + Key.get_formatted() + "&steamid=" + id)
+		#9.0: %http.request(STEAM_URL + API_CALLS[9] + Key.get_formatted() + "&steamid=" + id)
 		98.0:
 			check_suspicion()
 			%infostep.value += 1
@@ -80,6 +80,7 @@ func request_info():
 				if Key.HEADLESS_TODO == 0:
 					get_tree().quit()
 				self.queue_free()
+				printerr("[INFO] " + str(Key.HEADLESS_TODO) + " accounts to go")
 				return
 			%infostep.value = 100
 			request_info()
@@ -129,8 +130,12 @@ func handle_result(result_string):
 					%AccountCreationDate.hide()
 			else:
 				push_error("NONEXISTANT STEAM ID: ", id)
+				if Key.HEADLESS:
+					Key.HEADLESS_TODO -= 1
+					queue_free()
 				return
 		3.0: # Bans
+			if Key.HEADLESS: %infostep.value += 1
 			if len(result["players"]) != 0:
 				%VACBanned.button_pressed = result["players"][0]["VACBanned"]
 				%CommunityBanned.button_pressed = result["players"][0]["CommunityBanned"]
@@ -217,7 +222,7 @@ func handle_result(result_string):
 					resolve_var(result["playerstats"], %iBuildingsDestroyed)
 			else:
 				%TFInfo.hide()
-		9.0:
+		#9.0:
 			if result.has("playerstats"): if result["playerstats"].has("achievements"):
 				check_achievement_times(result["playerstats"]["achievements"])
 			%infostep.value = 97
@@ -324,14 +329,14 @@ func resolve_var(data: Dictionary, root: Node):
 			else:
 				class_label.set_text("")
 
-func check_achievement_times(achievement_data: Array):
+func check_achievement_times(achievement_data: Dictionary):
 	var tf_halloween_count := 0
-	for achievement in achievement_data:
-		if achievement["apiname"] == "TF_HALLOWEEN_DOOMSDAY_MILESTONE" and achievement["achieved"] == 1:
-			@warning_ignore("unused_variable")
-			var time = Time.get_datetime_dict_from_unix_time(int(achievement["unlocktime"]))
-			%halloweenMilestoneReached.text += "( achieved at: " + Time.get_datetime_string_from_unix_time(int(achievement["unlocktime"])) + ")"
-		if achievement["apiname"].contains("TF_HALLOWEEN_DOOMSDAY") and achievement["achieved"] == 1:
+	for achievement in achievement_data.keys():
+		#if achievement == "TF_HALLOWEEN_DOOMSDAY_MILESTONE":
+		#	@warning_ignore("unused_variable")
+		#	var time = Time.get_datetime_dict_from_unix_time(int(achievement["unlocktime"]))
+		#	%halloweenMilestoneReached.text += "( achieved at: " + Time.get_datetime_string_from_unix_time(int(achievement["unlocktime"])) + ")"
+		if achievement.contains("TF_HALLOWEEN_DOOMSDAY") and achievement_data[achievement]["achieved"] == 1:
 			tf_halloween_count += 1
 	if tf_halloween_count > 4:
 		%halloweenMilestoneReached.set_deferred("button_pressed", false)

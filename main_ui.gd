@@ -18,7 +18,7 @@ func _ready():
 		for arg in args:
 			#print(arg)
 			_on_steam_id_edit_text_submitted(arg)
-			await get_tree().create_timer(1).timeout
+			await get_tree().create_timer(1.0/1.0).timeout
 	args = OS.get_cmdline_args()
 	if len(args) > 0 and !Key.HEADLESS:
 		print("TF2CC - usage")
