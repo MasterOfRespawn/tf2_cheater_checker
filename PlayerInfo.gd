@@ -68,6 +68,9 @@ func request_info():
 				out += "name=\"" + %PlayerName.text + "\"\n"
 				out += "suspicion=" + str(%suspicion.value) + "\n"
 				out += "inaccesable=" + str(!%TFInfo.visible) + "\n"
+				out += "playtime=" + str(%playtime.value) + "\n"
+				out += "playtimeAsClasses=" + str(%totalPlaytime.value) + "\n"
+				out += "sniperPlaytime=" + str($VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues/sniper.text) + "\n"
 				var ignore := true
 				for suspicion in %suspicionConditions.get_children():
 					if ignore:
