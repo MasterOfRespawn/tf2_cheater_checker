@@ -66,6 +66,7 @@ func request_info():
 			if Key.HEADLESS:
 				var out = "[\"" + id + "\"]\n"
 				out += "name=\"" + %PlayerName.text + "\"\n"
+				out += "creationDate=" + %AccountCreationDate.text + "\n"
 				out += "suspicion=" + str(%suspicion.value) + "\n"
 				out += "inaccesable=" + str(!%TFInfo.visible) + "\n"
 				out += "playtime=" + str(%playtime.value) + "\n"
@@ -338,18 +339,18 @@ func resolve_var(data: Dictionary, root: Node):
 				class_label.set_text("")
 
 func check_achievement_times(achievement_data: Dictionary):
+	if len(achievement_data.keys()) == 520:
+		%all520Achievements.set_deferred("button_pressed", true)
 	var tf_halloween_count := 0
 	for achievement in achievement_data.keys():
-		#if achievement == "TF_HALLOWEEN_DOOMSDAY_MILESTONE":
-		#	@warning_ignore("unused_variable")
-		#	var time = Time.get_datetime_dict_from_unix_time(int(achievement["unlocktime"]))
-		#	%halloweenMilestoneReached.text += "( achieved at: " + Time.get_datetime_string_from_unix_time(int(achievement["unlocktime"])) + ")"
+
 		if achievement.contains("TF_HALLOWEEN_DOOMSDAY") and achievement_data[achievement]["achieved"] == 1:
 			tf_halloween_count += 1
 	if tf_halloween_count > 4:
 		%halloweenMilestoneReached.set_deferred("button_pressed", false)
 
 func check_suspicion():
+	await get_tree().create_timer(0.1).timeout
 	%suspicion.set_suffix("of " + str(%suspicionConditions.get_child_count() - 1))
 	for child in %suspicionConditions.get_children():
 		if child.button_pressed:

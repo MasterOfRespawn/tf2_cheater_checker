@@ -1455,11 +1455,17 @@ layout_mode = 2
 disabled = true
 text = "more than 60% sniper headshot ratio"
 
+[node name="all520Achievements" type="CheckBox" parent="VBoxContainer/HBoxContainer/suspicionConditions"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "all 520 achievements (impossible since 2013)"
+
 [node name="tooLowActualPlaytime" type="CheckBox" parent="VBoxContainer/HBoxContainer/suspicionConditions"]
 unique_name_in_owner = true
 layout_mode = 2
 disabled = true
-text = "less than 10% actual Playtime in game (idle bot?)"
+text = "less than 10% actual Playtime on valve servers (idle bot?)"
 
 [connection signal="request_completed" from="http" to="." method="_on_http_request_completed"]
 [connection signal="button_up" from="VBoxContainer/close_button" to="." method="_on_close_button_button_up"]
