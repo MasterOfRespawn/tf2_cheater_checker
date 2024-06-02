@@ -1,12 +1,14 @@
 extends Control
 
+var timeout = -1.0
+
 func _ready():
 	Key.load_api_key()
 	%FileMenu.get_child(0, true).id_pressed.connect(_on_file_menu_selected)
 	%PlayerMenu.get_child(0, true).id_pressed.connect(_on_player_menu_selected)
 	%GotoButton.get_popup().id_pressed.connect(_on_goto_menu_selected)
 	
-	var args = OS.get_cmdline_user_args()
+	var args := OS.get_cmdline_user_args()
 	if len(args) > 0:
 		if Key.API_KEY == "":
 			printerr("ADD API KEY FIRST!")
@@ -14,11 +16,11 @@ func _ready():
 		print(" --- tf2ccOut --- ")
 		Key.HEADLESS = true
 		Key.LOAD_FRIENDS = false
-		Key.HEADLESS_TODO = len(args)
+		#Key.HEADLESS_TODO = len(args)
+		Key.RECURSIVE = OS.get_cmdline_args().has("--recursive")
 		for arg in args:
 			for id in Tools.extract_steam_ids_from_text(arg):
-				_on_steam_id_edit_text_submitted(id)
-				await get_tree().create_timer(1.0/1.0).timeout
+				Key.CHECKS_TODO.append(id)
 	args = OS.get_cmdline_args()
 	if len(args) > 0 and !Key.HEADLESS:
 		print("TF2CC - usage")
@@ -26,6 +28,19 @@ func _ready():
 		print("--headless - disable window")
 		print("   {IDs}   - space seperated list of steam profile ids (64bit int)")
 
+func _process(delta):
+	if len(Key.CHECKS_TODO) != 0:
+		timeout -= delta
+		if timeout < 0:
+			print(Key.CHECKS_TODO)
+			timeout = 1
+			var id = Key.CHECKS_TODO[0]
+			%Players.add_child(load("res://player_info.tscn").instantiate())
+			var index = 0
+			while index != -1:
+				Key.CHECKS_TODO.remove_at(index)
+				index = Key.CHECKS_TODO.find(id)
+			%Players.get_child(-1).initialize(id)
 
 func _on_file_menu_selected(index: int):
 	if index == 0: get_tree().quit(0)

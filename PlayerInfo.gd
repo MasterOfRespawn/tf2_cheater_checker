@@ -40,9 +40,10 @@ func initialize_by_name(steam_name: String):
 	request_info()
 
 func initialize(steam_id: String):
-	if !Key.initialized(): 
+	if !Key.initialized() or Key.CHECKED.has(steam_id) or Key.CHECKS_TODO.has(steam_id): 
 		self.queue_free()
 		return
+	Key.CHECKED.append(steam_id)
 	id = steam_id
 	%infostep.value = 2
 	request_info()
@@ -84,12 +85,11 @@ func request_info():
 						continue
 					out += suspicion.get_name() + "=" + str(suspicion.button_pressed) + "\n"
 				print(out)
-				Key.HEADLESS_TODO -= 1
 				await get_tree().create_timer(1).timeout
-				if Key.HEADLESS_TODO == 0:
+				if (len(Key.CHECKS_TODO) + get_parent().get_child_count()) == 1:
 					get_tree().quit()
 				self.queue_free()
-				printerr("[INFO] " + str(Key.HEADLESS_TODO) + " accounts to go")
+				printerr("[INFO] " + str(len(Key.CHECKS_TODO) + get_parent().get_child_count() - 1)+ " accounts to go")
 				return
 			%infostep.value = 100
 			request_info()
@@ -145,6 +145,7 @@ func handle_result(result_string):
 				return
 		3.0: # Bans
 			if Key.HEADLESS: %infostep.value += 2
+			if Key.RECURSIVE: %infostep.value = 3
 			if len(result["players"]) != 0:
 				%VACBanned.button_pressed = result["players"][0]["VACBanned"]
 				%CommunityBanned.button_pressed = result["players"][0]["CommunityBanned"]
@@ -161,6 +162,7 @@ func handle_result(result_string):
 				push_error("NONEXISTANT STEAM ID: ", id)
 				return
 		4.0: #Friends
+			if Key.HEADLESS: %infostep.value += 1
 			if result.has("friendslist"):
 				var i := 0
 				for friend in result["friendslist"]["friends"]:
@@ -171,6 +173,7 @@ func handle_result(result_string):
 					i += 1
 					friends_to_load += 1
 					f.FRIEND_COMPLETELY_LOADED.connect(friend_loaded)
+					if Key.RECURSIVE and !Key.CHECKS_TODO.has(friend["steamid"]): Key.CHECKS_TODO.append(friend["steamid"])
 				if len(result["friendslist"]["friends"]) == 0:
 					%FriendContainer.get_child(0).set_text("no friends")
 					%FriendContainer.get_child(1).hide()
