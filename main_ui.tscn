@@ -36,11 +36,25 @@ popup/item_1/id = 0
 unique_name_in_owner = true
 layout_mode = 2
 text = "Player"
-item_count = 2
+item_count = 3
 popup/item_0/text = "add by id"
 popup/item_0/id = 0
 popup/item_1/text = "add by name"
 popup/item_1/id = 1
+popup/item_2/text = "add in batch"
+popup/item_2/id = 2
+
+[node name="GotoButton" type="MenuButton" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "goto tab"
+item_count = 3
+popup/item_0/text = "add by id"
+popup/item_0/id = 0
+popup/item_1/text = "add by name"
+popup/item_1/id = 1
+popup/item_2/text = "add in batch"
+popup/item_2/id = 2
 
 [node name="FriendButton" type="CheckButton" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -100,8 +114,34 @@ unique_name_in_owner = true
 layout_mode = 2
 alignment = 1
 
+[node name="batchPopup" type="AcceptDialog" parent="."]
+title = "enter steam vanity name"
+size = Vector2i(428, 212)
+ok_button_text = "confirm"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="batchPopup"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 420.0
+offset_bottom = 163.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="batchPopup/VBoxContainer"]
+layout_mode = 2
+text = "Enter any text containing steam ids for scanning here"
+
+[node name="steamIDBatchEdit" type="TextEdit" parent="batchPopup/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+size_flags_vertical = 3
+
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/FriendButton" to="." method="_on_friend_button_toggled"]
+[connection signal="child_entered_tree" from="VBoxContainer/VBoxContainer/Players" to="." method="_on_players_node_changed"]
+[connection signal="child_exiting_tree" from="VBoxContainer/VBoxContainer/Players" to="." method="_on_players_node_changed"]
 [connection signal="confirmed" from="idPopup" to="." method="_on_id_popup_confirmed"]
 [connection signal="text_submitted" from="idPopup/VBoxContainer/steamIDEdit" to="." method="_on_steam_id_edit_text_submitted"]
 [connection signal="confirmed" from="urlPopup" to="." method="_on_url_popup_confirmed"]
 [connection signal="text_submitted" from="urlPopup/VBoxContainer/steamURLEdit" to="." method="_on_steam_url_edit_text_submitted"]
+[connection signal="confirmed" from="batchPopup" to="." method="_on_batch_popup_confirmed"]
