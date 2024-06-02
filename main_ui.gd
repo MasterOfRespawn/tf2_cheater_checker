@@ -16,8 +16,7 @@ func _ready():
 		print(" --- tf2ccOut --- ")
 		Key.HEADLESS = true
 		Key.LOAD_FRIENDS = false
-		#Key.HEADLESS_TODO = len(args)
-		Key.RECURSIVE = OS.get_cmdline_args().has("--recursive")
+		#Key.RECURSIVE = OS.get_cmdline_args().has("--recursive")
 		for arg in args:
 			for id in Tools.extract_steam_ids_from_text(arg):
 				Key.CHECKS_TODO.append(id)
