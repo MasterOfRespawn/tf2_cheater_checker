@@ -47,10 +47,13 @@ func _http_request_completed(_result, _response, _header, data):
 		var json = JSON.new()
 		if json.parse(str) == 0:
 			var dat = json.data
-			self.get_child(2).get_child(0).set_text(dat["response"]["players"][0]["personaname"])
-			picture_url = dat["response"]["players"][0]["avatarmedium"]
-			self.get_child(0).request(picture_url)
-			state = 2
+			if len(dat["response"]["players"]) > 0:
+				self.get_child(2).get_child(0).set_text(dat["response"]["players"][0]["personaname"])
+				picture_url = dat["response"]["players"][0]["avatarmedium"]
+				self.get_child(0).request(picture_url)
+				state = 2
+			else:
+				self.get_child(2).get_child(0).set_text("NOT ACCESSIBLE")
 		else:
 			print("FRIEND PROFILE REQUEST ERROR (RETRYING SOON)[" + id + "] - retry" + str(retries))
 			await get_tree().create_timer(0.5 + (retries*2)).timeout
