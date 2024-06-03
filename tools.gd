@@ -10,7 +10,7 @@ static func check_steam_id_format_validity(steam_id: String) -> bool:
 	return true
 
 static func extract_steam_ids_from_text(text: String) -> PackedStringArray:
-	var parts := split_string_multiple_delimiters(text, ["/", "\\", "\"", ",", ";", "\n", "[", "]", "{", "}", " "])
+	var parts := split_string_multiple_delimiters(text, ["/", "\\", "\"", ",", ";", "\n", "[", "]", "{", "}", " ", "'"])
 	var valid_parts := PackedStringArray()
 	
 	for part in parts:
