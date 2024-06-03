@@ -31,7 +31,6 @@ func _process(delta):
 	if len(Key.CHECKS_TODO) != 0:
 		timeout -= delta
 		if timeout < 0:
-			print(Key.CHECKS_TODO)
 			timeout = 1
 			var id = Key.CHECKS_TODO[0]
 			%Players.add_child(load("res://player_info.tscn").instantiate())
