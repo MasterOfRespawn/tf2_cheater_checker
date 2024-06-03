@@ -50,14 +50,14 @@ func initialize(steam_id: String):
 
 func request_info():
 	match %infostep.value:
-		1.0: %http.request(STEAM_URL + API_CALLS[1] + Key.get_formatted() + "&vanityurl=" + id)
-		2.0: %http.request(STEAM_URL + API_CALLS[2] + Key.get_formatted() + "&steamids=" + id)
-		3.0: %http.request(STEAM_URL + API_CALLS[3] + Key.get_formatted() + "&steamids=" + id)
-		4.0: %http.request(STEAM_URL + API_CALLS[4] + Key.get_formatted() + "&steamid=" + id)
-		5.0: %http.request(STEAM_URL + API_CALLS[5] + Key.get_formatted() + "&steamid=" + id)
-		6.0: %http.request(STEAM_URL + API_CALLS[6] + Key.get_formatted() + "&steamid=" + id)
-		7.0: %http.request(STEAM_URL + API_CALLS[7] + Key.get_formatted() + "&steamid=" + id)
-		8.0: %http.request(STEAM_URL + API_CALLS[8] + Key.get_formatted() + "&steamid=" + id)
+		1.0: %http.request(STEAM_URL + API_CALLS[1] + Key.get_formatted() + "&vanityurl=" + id) # [optional] [notInHeadless]
+		2.0: %http.request(STEAM_URL + API_CALLS[2] + Key.get_formatted() + "&steamids=" + id) # [batchable]
+		3.0: %http.request(STEAM_URL + API_CALLS[3] + Key.get_formatted() + "&steamids=" + id) # [batchable]
+		4.0: %http.request(STEAM_URL + API_CALLS[4] + Key.get_formatted() + "&steamid=" + id) # [notInHeadless]
+		5.0: %http.request(STEAM_URL + API_CALLS[5] + Key.get_formatted() + "&steamid=" + id) # [notInHeadless]
+		6.0: %http.request(STEAM_URL + API_CALLS[6] + Key.get_formatted() + "&steamid=" + id) # 
+		7.0: %http.request(STEAM_URL + API_CALLS[7] + Key.get_formatted() + "&steamid=" + id) # [skippableInHeadless]
+		8.0: %http.request(STEAM_URL + API_CALLS[8] + Key.get_formatted() + "&steamid=" + id) # 
 		#9.0: %http.request(STEAM_URL + API_CALLS[9] + Key.get_formatted() + "&steamid=" + id)
 		98.0:
 			check_suspicion()
@@ -67,7 +67,7 @@ func request_info():
 			if Key.HEADLESS:
 				var out = "[\"" + id + "\"]\n"
 				out += "name=\"" + %PlayerName.text + "\"\n"
-				out += "creationDate=" + %AccountCreationDate.text + "\n"
+				out += "creationDate=\"" + %AccountCreationDate.text + "\"\n"
 				out += "suspicion=" + str(%suspicion.value) + "\n"
 				out += "inaccesable=" + str(!%TFInfo.visible) + "\n"
 				out += "playtime=" + str(%playtime.value) + "\n"
@@ -78,6 +78,7 @@ func request_info():
 					sniperTimeInt += int(sniperTime.split("h")[0]) * 60
 					sniperTimeInt += int(sniperTime.split("h")[1].split("m")[0])
 				out += "sniperPlaytime=" + str(sniperTimeInt) + "\n"
+				await get_tree().create_timer(0.1).timeout
 				var ignore := true
 				for suspicion in %suspicionConditions.get_children():
 					if ignore:
@@ -203,6 +204,8 @@ func handle_result(result_string):
 					var l = Label.new()
 					if game["appid"] == 440:
 						%playtime.value = game["playtime_forever"]
+						# skip owned game time check in headless mode if a result is already available
+						if Key.HEADLESS: %infostep.value += 1
 					l.set_text(game["name"] + " [" + str(game["appid"]) + "]\nTotal: " + str(
 						int(game["playtime_forever"]/60)) + "h" + str(int(game["playtime_forever"])%60)+"m\nLast2Weeks: " + str(
 						int(game["playtime_2weeks"]/60)) + "h" + str(int(game["playtime_2weeks"])%60)+"m\n")
