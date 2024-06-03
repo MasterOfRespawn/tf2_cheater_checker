@@ -254,6 +254,9 @@ func _on_http_request_completed(result: int, _response_code: int, _headers: Pack
 
 
 func _on_close_button_button_up():
+	var index = Key.CHECKED.find(self.id)
+	if index != -1:
+		Key.CHECKED.remove_at(index)
 	self.queue_free()
 
 func resolve_playtimes(data: Dictionary):
