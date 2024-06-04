@@ -4,6 +4,7 @@ var API_KEY := ""
 var LOAD_FRIENDS := true
 var HEADLESS := false
 var RECURSIVE := false
+var SCAN_ACHIEVEMENT_TIMES := false
 var CHECKS_TODO := PackedStringArray()
 var CHECKED := PackedStringArray()
 

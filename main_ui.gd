@@ -85,7 +85,7 @@ func _on_batch_popup_confirmed():
 
 
 func _on_players_node_changed(_node = null):
-	await get_tree().create_timer(0.01).timeout
+	await get_tree().create_timer(1).timeout
 	var menu: PopupMenu = %GotoButton.get_popup()
 	menu.clear()
 	for child in %Players.get_children():
@@ -95,3 +95,7 @@ func _on_players_node_changed(_node = null):
 
 func _on_goto_menu_selected(index: int):
 	%Players.current_tab = index
+
+
+func _on_scan_achievement_times_toggled(toggled_on):
+	Key.SCAN_ACHIEVEMENT_TIMES = toggled_on

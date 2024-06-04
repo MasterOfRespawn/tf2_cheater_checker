@@ -46,6 +46,7 @@ popup/item_2/id = 2
 
 [node name="GotoButton" type="MenuButton" parent="VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 text = "goto tab"
 item_count = 3
@@ -60,6 +61,10 @@ popup/item_2/id = 2
 layout_mode = 2
 button_pressed = true
 text = "load friend list details"
+
+[node name="ScanAchievementTimes" type="CheckButton" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "force scan achievement times"
 
 [node name="VBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -138,6 +143,7 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/FriendButton" to="." method="_on_friend_button_toggled"]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/ScanAchievementTimes" to="." method="_on_scan_achievement_times_toggled"]
 [connection signal="child_entered_tree" from="VBoxContainer/VBoxContainer/Players" to="." method="_on_players_node_changed"]
 [connection signal="child_exiting_tree" from="VBoxContainer/VBoxContainer/Players" to="." method="_on_players_node_changed"]
 [connection signal="confirmed" from="idPopup" to="." method="_on_id_popup_confirmed"]

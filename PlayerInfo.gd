@@ -24,7 +24,7 @@ var friends_to_load := 0
 # 6 recently played
 # 7 owned games
 # 8 tf2 stats
-# 9 tf2 achievements (mainly completion times) [REDUNDANT, DISABLED]
+# 9 tf2 achievements (mainly completion times)
 # 100 player icon
 # 200 dump player info on cli mode
 # 255 complete
@@ -58,7 +58,7 @@ func request_info():
 		6.0: %http.request(STEAM_URL + API_CALLS[6] + Key.get_formatted() + "&steamid=" + id) # 
 		7.0: %http.request(STEAM_URL + API_CALLS[7] + Key.get_formatted() + "&steamid=" + id) # [skippableInHeadless]
 		8.0: %http.request(STEAM_URL + API_CALLS[8] + Key.get_formatted() + "&steamid=" + id) # 
-		#9.0: %http.request(STEAM_URL + API_CALLS[9] + Key.get_formatted() + "&steamid=" + id)
+		9.0: %http.request(STEAM_URL + API_CALLS[9] + Key.get_formatted() + "&steamid=" + id) # [only read on suspicius achievements]
 		98.0:
 			check_suspicion()
 			%infostep.value += 1
@@ -74,7 +74,7 @@ func request_info():
 				out += "playtimeAsClasses=" + str(%totalPlaytime.value) + "\n"
 				var sniperTime: String = $VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues/sniper.text
 				var sniperTimeInt = 0
-				if sniperTime != "sniper":
+				if sniperTime != "sniper" and sniperTime != "__NOT_PLAYED__":
 					sniperTimeInt += int(sniperTime.split("h")[0]) * 60
 					sniperTimeInt += int(sniperTime.split("h")[1].split("m")[0])
 				out += "sniperPlaytime=" + str(sniperTimeInt) + "\n"
@@ -141,8 +141,9 @@ func handle_result(result_string):
 			else:
 				push_error("NONEXISTANT STEAM ID: ", id)
 				if Key.HEADLESS:
-					Key.HEADLESS_TODO -= 1
-					queue_free()
+					_on_close_button_button_up()
+					#Key.CHECKS_TODO.remove_at(Key.CHECKS_TODO.find(id))
+					#queue_free()
 				return
 		3.0: # Bans
 			if Key.HEADLESS: %infostep.value += 2
@@ -237,7 +238,12 @@ func handle_result(result_string):
 					resolve_var(result["playerstats"], %iBuildingsDestroyed)
 			else:
 				%TFInfo.hide()
-		#9.0:
+			if result.has("playerstats"): if result["playerstats"].has("achievements"):
+				if !check_achievement_validity(result["playerstats"]["achievements"]):
+					%infostep.value = 97
+			else:
+				%infostep.value = 97
+		9.0:
 			if result.has("playerstats"): if result["playerstats"].has("achievements"):
 				check_achievement_times(result["playerstats"]["achievements"])
 			%infostep.value = 97
@@ -347,16 +353,24 @@ func resolve_var(data: Dictionary, root: Node):
 			else:
 				class_label.set_text("")
 
-func check_achievement_times(achievement_data: Dictionary):
+func check_achievement_validity(achievement_data: Dictionary) -> bool:
+	var suspicious := Key.SCAN_ACHIEVEMENT_TIMES
 	if len(achievement_data.keys()) == 520:
 		%all520Achievements.set_deferred("button_pressed", true)
+		suspicious = true
 	var tf_halloween_count := 0
 	for achievement in achievement_data.keys():
-
 		if achievement.contains("TF_HALLOWEEN_DOOMSDAY") and achievement_data[achievement]["achieved"] == 1:
 			tf_halloween_count += 1
+		if achievement.contains("TF_REPLAY_YOUTUBE_VIEWS_"):
+			if Time.get_datetime_dict_from_datetime_string(%AccountCreationDate.get_text(), false)["year"] > 2013:
+				%post2013Youtube.set_deferred("button_pressed", true)
+			suspicious = true
 	if tf_halloween_count > 4:
 		%halloweenMilestoneReached.set_deferred("button_pressed", false)
+	elif %halloweenMilestoneReached.button_pressed:
+		suspicious = true
+	return suspicious
 
 func check_suspicion():
 	await get_tree().create_timer(0.1).timeout
@@ -385,3 +399,23 @@ func _on_friend_list_search_text_changed(new_text):
 		if child.get_child_count() == 3: continue # still loading
 		child.visible = child.get_child(1).get_child(0).get_text().to_lower().contains(new_text.to_lower()) or new_text.to_lower().contains(child.get_child(1).get_child(0).get_text().to_lower())
 		if new_text == "": child.visible = true
+
+func check_achievement_times(achievements: Array):
+	var last_achievement_timestamp := 0
+	var timestamp_achievement_times := 0
+	for achievement in achievements:
+		if achievement["achieved"]:
+			if achievement["unlocktime"] > last_achievement_timestamp:
+				last_achievement_timestamp = achievement["unlocktime"]
+				timestamp_achievement_times = 0
+			if achievement["unlocktime"] == last_achievement_timestamp:
+				timestamp_achievement_times += 1
+		if achievement["achieved"] == 1 and achievement["apiname"].contains("TF_REPLAY_YOUTUBE_VIEWS_"):
+			if Time.get_datetime_dict_from_unix_time(achievement["unlocktime"])["year"] > 2013:
+				%post2013Youtube.set_deferred("button_pressed", true)
+			else:
+				%post2013Youtube.set_deferred("button_pressed", true)
+	
+	if timestamp_achievement_times > 5: # more than 5 achievements in the same second
+		%tooManyAchievementsAtOnce.set_deferred("button_pressed", true)
+	print(last_achievement_timestamp)
