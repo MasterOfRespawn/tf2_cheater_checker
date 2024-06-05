@@ -142,8 +142,6 @@ func handle_result(result_string):
 				push_error("NONEXISTANT STEAM ID: ", id)
 				if Key.HEADLESS:
 					_on_close_button_button_up()
-					#Key.CHECKS_TODO.remove_at(Key.CHECKS_TODO.find(id))
-					#queue_free()
 				return
 		3.0: # Bans
 			if Key.HEADLESS: %infostep.value += 2
@@ -156,10 +154,10 @@ func handle_result(result_string):
 				if result["players"][0]["VACBanned"] or result["players"][0]["CommunityBanned"] or result["players"][0]["NumberOfGameBans"] != 0:
 					%DSLB.show()
 					%DSLB.set_text(str(result["players"][0]["DaysSinceLastBan"])+ " Days since last ban")
-					%VAC_Ban.button_pressed = true
 				else:
 					%NoBans.show()
 					%DSLB.get_parent().hide()
+				%VAC_Ban.button_pressed = %VACBanned.button_pressed
 			else:
 				push_error("NONEXISTANT STEAM ID: ", id)
 				return

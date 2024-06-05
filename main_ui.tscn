@@ -121,14 +121,15 @@ alignment = 1
 
 [node name="batchPopup" type="AcceptDialog" parent="."]
 title = "enter text containing steam ids"
-size = Vector2i(428, 212)
+position = Vector2i(0, 36)
+size = Vector2i(1024, 768)
 ok_button_text = "confirm"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="batchPopup"]
 offset_left = 8.0
 offset_top = 8.0
-offset_right = 420.0
-offset_bottom = 163.0
+offset_right = 1016.0
+offset_bottom = 719.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
