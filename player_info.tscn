@@ -1447,7 +1447,7 @@ text = "invalid class achievement milestone order"
 unique_name_in_owner = true
 layout_mode = 2
 disabled = true
-text = "achievement milestone without playtime"
+text = "class achievement milestone without playtime"
 
 [node name="highSniperHeadshotRate" type="CheckBox" parent="VBoxContainer/HBoxContainer/suspicionConditions"]
 unique_name_in_owner = true

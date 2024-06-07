@@ -55,11 +55,11 @@ func _http_request_completed(_result, _response, _header, data):
 			else:
 				self.get_child(2).get_child(0).set_text("NOT ACCESSIBLE")
 		else:
-			print("FRIEND PROFILE REQUEST ERROR (RETRYING SOON)[" + id + "] - retry" + str(retries))
+			printerr("FRIEND PROFILE REQUEST ERROR (RETRYING SOON)[" + id + "] - retry" + str(retries))
 			await get_tree().create_timer(0.5 + (retries*2)).timeout
 			retries += 1
 			if retries == 10:
-				print("TOO MUCH TRAFFIC, GIVING UP [" + id + "]")
+				printerr("TOO MUCH TRAFFIC, GIVING UP [" + id + "]")
 				return
 			self.get_child(0).request("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?" + Key.get_formatted() + "&steamids=" + id)
 	elif state == 2:
@@ -67,7 +67,7 @@ func _http_request_completed(_result, _response, _header, data):
 		if img.load_jpg_from_buffer(data) == OK:
 			self.get_child(1).get_child(0).set_texture(ImageTexture.create_from_image(img))
 		else:
-			print("INVALID AVATAR [" + id + "]")
+			printerr("INVALID AVATAR [" + id + "]")
 		state = 3
 		self.get_child(0).queue_free()
 		FRIEND_COMPLETELY_LOADED.emit()
