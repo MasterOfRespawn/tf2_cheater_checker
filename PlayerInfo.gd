@@ -60,11 +60,13 @@ func request_info():
 		8.0: %http.request(STEAM_URL + API_CALLS[8] + Key.get_formatted() + "&steamid=" + id) # 
 		9.0: %http.request(STEAM_URL + API_CALLS[9] + Key.get_formatted() + "&steamid=" + id) # [only read on suspicius achievements]
 		98.0:
+			await get_tree().create_timer(0.1).timeout
 			check_suspicion()
 			%infostep.value += 1
 			request_info()
 		99.0:
 			if Key.HEADLESS:
+				await get_tree().create_timer(0.1).timeout
 				var out = "[\"" + id + "\"]\n"
 				out += "name=\"" + %PlayerName.text + "\"\n"
 				out += "creationDate=\"" + %AccountCreationDate.text + "\"\n"
@@ -86,7 +88,7 @@ func request_info():
 						continue
 					out += suspicion.get_name() + "=" + str(suspicion.button_pressed) + "\n"
 				print(out)
-				await get_tree().create_timer(1).timeout
+				await get_tree().create_timer(0.1).timeout
 				if (len(Key.CHECKS_TODO) + get_parent().get_child_count()) == 1:
 					get_tree().quit()
 				self.queue_free()
@@ -416,4 +418,4 @@ func check_achievement_times(achievements: Array):
 	
 	if timestamp_achievement_times > 5: # more than 5 achievements in the same second
 		%tooManyAchievementsAtOnce.set_deferred("button_pressed", true)
-	print(last_achievement_timestamp)
+	#print(last_achievement_timestamp)
