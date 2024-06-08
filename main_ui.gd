@@ -23,8 +23,9 @@ func _ready():
 	args = OS.get_cmdline_args()
 	if len(args) > 0 and !Key.HEADLESS:
 		print("TF2CC - usage")
-		print(OS.get_executable_path() + " [--headless] -- {IDs}")
+		print(OS.get_executable_path() + " [--headless] [--short] -- {IDs}")
 		print("--headless - disable window")
+		print("--short    - print X on every active suspicion check instead of true")
 		print("   {IDs}   - space seperated list of steam profile ids (64bit int)")
 
 func _process(delta):

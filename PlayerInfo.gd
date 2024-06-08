@@ -86,7 +86,10 @@ func request_info():
 					if ignore:
 						ignore = false
 						continue
-					out += suspicion.get_name() + "=" + str(suspicion.button_pressed) + "\n"
+					if OS.get_cmdline_args().has("--short"):
+						out += suspicion.get_name() + "=\"" + "X" if suspicion.button_pressed else "" + "\""
+					else:
+						out += suspicion.get_name() + "=" + str(suspicion.button_pressed) + "\n"
 				print(out)
 				await get_tree().create_timer(0.1).timeout
 				if (len(Key.CHECKS_TODO) + get_parent().get_child_count()) == 1:
