@@ -40,6 +40,8 @@ func initialize_by_name(steam_name: String):
 	request_info()
 
 func initialize(steam_id: String):
+	if Key.HEADLESS:
+		get_tree().create_timer().
 	if !Key.initialized() or Key.CHECKED.has(steam_id) or Key.CHECKS_TODO.has(steam_id): 
 		self.queue_free()
 		return
@@ -65,38 +67,7 @@ func request_info():
 			%infostep.value += 1
 			request_info()
 		99.0:
-			if Key.HEADLESS:
-				await get_tree().create_timer(0.1).timeout
-				var out = "[\"" + id + "\"]\n"
-				out += "name=\"" + %PlayerName.text + "\"\n"
-				out += "creationDate=\"" + %AccountCreationDate.text + "\"\n"
-				out += "suspicion=" + str(%suspicion.value) + "\n"
-				out += "inaccesable=" + str(!%TFInfo.visible) + "\n"
-				out += "playtime=" + str(%playtime.value) + "\n"
-				out += "playtimeAsClasses=" + str(%totalPlaytime.value) + "\n"
-				var sniperTime: String = $VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues/sniper.text
-				var sniperTimeInt = 0
-				if sniperTime != "sniper" and sniperTime != "__NOT_PLAYED__":
-					sniperTimeInt += int(sniperTime.split("h")[0]) * 60
-					sniperTimeInt += int(sniperTime.split("h")[1].split("m")[0])
-				out += "sniperPlaytime=" + str(sniperTimeInt) + "\n"
-				await get_tree().create_timer(0.1).timeout
-				var ignore := true
-				for suspicion in %suspicionConditions.get_children():
-					if ignore:
-						ignore = false
-						continue
-					if OS.get_cmdline_args().has("--short"):
-						out += suspicion.get_name() + "=\"" + ("X" if suspicion.button_pressed else "") + "\"\n"
-					else:
-						out += suspicion.get_name() + "=" + str(suspicion.button_pressed) + "\n"
-				print(out)
-				await get_tree().create_timer(0.1).timeout
-				if (len(Key.CHECKS_TODO) + get_parent().get_child_count()) == 1:
-					get_tree().quit()
-				self.queue_free()
-				printerr("[INFO] " + str(len(Key.CHECKS_TODO) + get_parent().get_child_count() - 1)+ " accounts to go")
-				return
+			dump_info()
 			%infostep.value = 100
 			request_info()
 		100.0: %http.request(profile_picture_url)
@@ -422,3 +393,37 @@ func check_achievement_times(achievements: Array):
 	if timestamp_achievement_times > 5: # more than 5 achievements in the same second
 		%tooManyAchievementsAtOnce.set_deferred("button_pressed", true)
 	#print(last_achievement_timestamp)
+
+func dump_info():
+	if Key.HEADLESS:
+		await get_tree().create_timer(0.1).timeout
+		var out = "[\"" + id + "\"]\n"
+		out += "name=\"" + %PlayerName.text + "\"\n"
+		out += "creationDate=\"" + %AccountCreationDate.text + "\"\n"
+		out += "suspicion=" + str(%suspicion.value) + "\n"
+		out += "inaccesable=" + str(!%TFInfo.visible) + "\n"
+		out += "playtime=" + str(%playtime.value) + "\n"
+		out += "playtimeAsClasses=" + str(%totalPlaytime.value) + "\n"
+		var sniperTime: String = $VBoxContainer/ScrollContainer/TFInfo/Playtimes/HBoxContainer/PlaytimeValues/sniper.text
+		var sniperTimeInt = 0
+		if sniperTime != "sniper" and sniperTime != "__NOT_PLAYED__":
+			sniperTimeInt += int(sniperTime.split("h")[0]) * 60
+			sniperTimeInt += int(sniperTime.split("h")[1].split("m")[0])
+		out += "sniperPlaytime=" + str(sniperTimeInt) + "\n"
+		await get_tree().create_timer(0.1).timeout
+		var ignore := true
+		for suspicion in %suspicionConditions.get_children():
+			if ignore:
+				ignore = false
+				continue
+			if OS.get_cmdline_args().has("--short"):
+				out += suspicion.get_name() + "=\"" + ("X" if suspicion.button_pressed else "") + "\"\n"
+			else:
+				out += suspicion.get_name() + "=" + str(suspicion.button_pressed) + "\n"
+		print(out)
+		await get_tree().create_timer(0.1).timeout
+		if (len(Key.CHECKS_TODO) + get_parent().get_child_count()) == 1:
+			get_tree().quit()
+		self.queue_free()
+		printerr("[INFO] " + str(len(Key.CHECKS_TODO) + get_parent().get_child_count() - 1)+ " accounts to go")
+		return
