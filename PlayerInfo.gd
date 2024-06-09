@@ -67,7 +67,9 @@ func request_info():
 			%infostep.value += 1
 			request_info()
 		99.0:
-			dump_info()
+			if Key.HEADLESS:
+				dump_info()
+				return
 			%infostep.value = 100
 			request_info()
 		100.0: %http.request(profile_picture_url)
