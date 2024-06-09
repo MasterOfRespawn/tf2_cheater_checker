@@ -87,7 +87,7 @@ func request_info():
 						ignore = false
 						continue
 					if OS.get_cmdline_args().has("--short"):
-						out += suspicion.get_name() + "=\"" + "X" if suspicion.button_pressed else "" + "\""
+						out += suspicion.get_name() + "=\"" + ("X" if suspicion.button_pressed else "") + "\""
 					else:
 						out += suspicion.get_name() + "=" + str(suspicion.button_pressed) + "\n"
 				print(out)
