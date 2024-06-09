@@ -41,7 +41,7 @@ func initialize_by_name(steam_name: String):
 
 func initialize(steam_id: String):
 	if Key.HEADLESS:
-		get_tree().create_timer().
+		get_tree().create_timer(60*5).timeout.connect(dump_info)
 	if !Key.initialized() or Key.CHECKED.has(steam_id) or Key.CHECKS_TODO.has(steam_id): 
 		self.queue_free()
 		return
