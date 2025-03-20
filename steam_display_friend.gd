@@ -56,7 +56,7 @@ func _http_request_completed(_result, _response, _header, data):
 				self.get_child(2).get_child(0).set_text("NOT ACCESSIBLE")
 		else:
 			printerr("FRIEND PROFILE REQUEST ERROR (RETRYING SOON)[" + id + "] - retry" + str(retries))
-			await get_tree().create_timer(0.5 + (retries*2)).timeout
+			await get_tree().create_timer(0.5 + (retries*3)).timeout
 			retries += 1
 			if retries == 10:
 				printerr("TOO MUCH TRAFFIC, GIVING UP [" + id + "]")
