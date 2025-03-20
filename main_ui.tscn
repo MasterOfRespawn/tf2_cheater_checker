@@ -57,11 +57,11 @@ popup/item_2/id = 2
 
 [node name="FriendButton" type="CheckButton" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
-button_pressed = true
 text = "load friend list details"
 
 [node name="ScanAchievementTimes" type="CheckButton" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
+button_pressed = true
 text = "force scan achievement times"
 
 [node name="VBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
